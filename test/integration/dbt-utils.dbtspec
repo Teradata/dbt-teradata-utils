@@ -8,7 +8,7 @@ target:
   log: "0"
 
 projects:
-  - name: equal_rowcount_positive
+  - name: equal_rowcount_passes
     paths:
       packages.yml: |
         packages:
@@ -37,7 +37,7 @@ projects:
         3,val3A,val3B
         4,val4A,val4B
 
-  - name: equal_rowcount_negative
+  - name: equal_rowcount_fails
     paths:
       packages.yml: |
         packages:
@@ -65,10 +65,10 @@ projects:
         2,val2A,val2B
         3,val3A,val3B
 
-  - name: fewer_rows_than_positive
+  - name: fewer_rows_than_passes
     paths:
       dbt_project.yml: |
-        name: 'fewer_rows_than_positive'
+        name: 'fewer_rows_than_passes'
         version: '1.0.0'
         config-version: 2
         dispatch:
@@ -104,11 +104,10 @@ projects:
         3,val3A,val3B
         4,val4A,val4B
 
-  - name: fewer_rows_than_negative
+  - name: fewer_rows_than_fails
     paths:
-
       dbt_project.yml: |
-        name: 'fewer_rows_than_negative'
+        name: 'fewer_rows_than_fails'
         version: '1.0.0'
         config-version: 2
         dispatch:
@@ -116,6 +115,7 @@ projects:
             search_order:
               - teradata_utils
               - dbt_utils
+
       packages.yml: |
         packages:
         - package: dbt-labs/dbt_utils
@@ -143,11 +143,91 @@ projects:
         2,val2A,val2B
         3,val3A,val3B
         4,val4A,val4B
+
+  - name: equality_passes
+    paths:
+
+      dbt_project.yml: |
+        name: 'equality_passes'
+        version: '1.0.0'
+        config-version: 2
+        dispatch:
+          - macro_namespace: dbt_utils
+            search_order:
+              - teradata_utils
+              - dbt_utils
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+        - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
+
+      models/schema.yml: |
+        version: 2
+        models:
+          - name: test_table1
+            tests:
+              - dbt_utils.equality:
+                  compare_model: ref('test_table2')
+
+      seeds/test_table1.csv: |
+        id,attrA,attrB
+        1,val1A,val1B
+        2,val2A,val2B
+        3,val3A,val3B
+        4,val4A,val4B
+
+      seeds/test_table2.csv: |
+        id,attrA,attrB
+        1,val1A,val1B
+        2,val2A,val2B
+        3,val3A,val3B
+        4,val4A,val4B
+
+  - name: equality_fails
+    paths:
+
+      dbt_project.yml: |
+        name: 'equality_fails'
+        version: '1.0.0'
+        config-version: 2
+        dispatch:
+          - macro_namespace: dbt_utils
+            search_order:
+              - teradata_utils
+              - dbt_utils
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+        - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
+
+      models/schema.yml: |
+        version: 2
+        models:
+          - name: test_table1
+            tests:
+              - dbt_utils.equality:
+                  compare_model: ref('test_table2')
+
+      seeds/test_table1.csv: |
+        id,attrA,attrB
+        1,val1A,val1B
+        2,val2A,val2B
+        3,val3A,val3B
+        4,val4A,val4B
+
+      seeds/test_table2.csv: |
+        id,attrA,attrB
+        5,val1A,val1B
+        6,val2A,val2B
+        7,val3A,val3B
+        8,val4A,val4B
 
 sequences:
 
-  test_equal_rowcount_positive:
-    project: equal_rowcount_positive
+  test_equal_rowcount_passes:
+    project: equal_rowcount_passes
     sequence:
       - type: dbt
         cmd: deps
@@ -159,9 +239,14 @@ sequences:
         cmd: test
       - type: run_results
         exists: True
+        length: 1
+        names:
+          - dbt_utils_equal_rowcount_test_table1_ref_test_table2_
+        attributes:
+          dbt_utils_equal_rowcount_test_table1_ref_test_table2_.status: pass
 
-  test_equal_rowcount_negative:
-    project: equal_rowcount_negative
+  test_equal_rowcount_fails:
+    project: equal_rowcount_fails
     sequence:
       - type: dbt
         cmd: deps
@@ -175,11 +260,13 @@ sequences:
       - type: run_results
         exists: True
         length: 1
+        names:
+          - dbt_utils_equal_rowcount_test_table1_ref_test_table2_
         attributes:
           dbt_utils_equal_rowcount_test_table1_ref_test_table2_.status: fail
 
-  test_fewer_rows_than_positive:
-    project: fewer_rows_than_positive
+  test_fewer_rows_than_passes:
+    project: fewer_rows_than_passes
     sequence:
       - type: dbt
         cmd: deps
@@ -192,11 +279,13 @@ sequences:
       - type: run_results
         exists: True
         length: 1
+        names:
+          - dbt_utils_fewer_rows_than_test_table1_ref_test_table2_
         attributes:
           dbt_utils_fewer_rows_than_test_table1_ref_test_table2_.status: pass
 
-  test_fewer_rows_than_negative:
-    project: fewer_rows_than_negative
+  test_fewer_rows_than_fails:
+    project: fewer_rows_than_fails
     sequence:
       - type: dbt
         cmd: deps
@@ -210,5 +299,46 @@ sequences:
       - type: run_results
         exists: True
         length: 1
+        names:
+          - dbt_utils_fewer_rows_than_test_table1_ref_test_table2_
         attributes:
           dbt_utils_fewer_rows_than_test_table1_ref_test_table2_.status: fail
+
+  test_equality_passes:
+    project: equality_passes
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: run_results
+        exists: True
+      - type: dbt
+        cmd: test
+      - type: run_results
+        exists: True
+        length: 1
+        names:
+          - dbt_utils_equality_test_table1_ref_test_table2_
+        attributes:
+          dbt_utils_equality_test_table1_ref_test_table2_.status: pass
+
+  test_equality_fails:
+    project: equality_fails
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: run_results
+        exists: True
+      - type: dbt
+        cmd: test
+        check: false
+      - type: run_results
+        exists: True
+        length: 1
+        names:
+          - dbt_utils_equality_test_table1_ref_test_table2_
+        attributes:
+          dbt_utils_equality_test_table1_ref_test_table2_.status: fail
