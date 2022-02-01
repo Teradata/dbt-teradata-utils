@@ -1,4 +1,3 @@
-
 {% macro teradata__test_fewer_rows_than(model, compare_model) %}
 
 {{ config(fail_calc = 'coalesce(row_count_delta, 0)') }}
