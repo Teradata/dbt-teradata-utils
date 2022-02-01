@@ -8,7 +8,7 @@ target:
   log: "0"
 
 projects:
-  - name: validate_equal_rowcount_positive
+  - name: equal_rowcount_positive
     paths:
       packages.yml: |
         packages:
@@ -37,7 +37,7 @@ projects:
         3,val3A,val3B
         4,val4A,val4B
 
-  - name: validate_equal_rowcount_negative
+  - name: equal_rowcount_negative
     paths:
       packages.yml: |
         packages:
@@ -65,10 +65,10 @@ projects:
         2,val2A,val2B
         3,val3A,val3B
 
-  - name: validate_equal_fewer_rows_than_positive
+  - name: fewer_rows_than_positive
     paths:
       dbt_project.yml: |
-        name: 'validate_equal_fewer_rows_than_positive'
+        name: 'fewer_rows_than_positive'
         version: '1.0.0'
         config-version: 2
         dispatch:
@@ -104,11 +104,11 @@ projects:
         3,val3A,val3B
         4,val4A,val4B
 
-  - name: validate_equal_fewer_rows_than_negative
+  - name: fewer_rows_than_negative
     paths:
 
       dbt_project.yml: |
-        name: 'validate_equal_fewer_rows_than_negative'
+        name: 'fewer_rows_than_negative'
         version: '1.0.0'
         config-version: 2
         dispatch:
@@ -146,8 +146,8 @@ projects:
 
 sequences:
 
-  test_validate_equal_rowcount_positive:
-    project: validate_equal_rowcount_positive
+  test_equal_rowcount_positive:
+    project: equal_rowcount_positive
     sequence:
       - type: dbt
         cmd: deps
@@ -160,8 +160,8 @@ sequences:
       - type: run_results
         exists: True
 
-  test_validate_equal_rowcount_negative:
-    project: validate_equal_rowcount_negative
+  test_equal_rowcount_negative:
+    project: equal_rowcount_negative
     sequence:
       - type: dbt
         cmd: deps
@@ -178,8 +178,8 @@ sequences:
         attributes:
           dbt_utils_equal_rowcount_test_table1_ref_test_table2_.status: fail
 
-  test_validate_equal_fewer_rows_than_positive:
-    project: validate_equal_fewer_rows_than_positive
+  test_fewer_rows_than_positive:
+    project: fewer_rows_than_positive
     sequence:
       - type: dbt
         cmd: deps
@@ -195,8 +195,8 @@ sequences:
         attributes:
           dbt_utils_fewer_rows_than_test_table1_ref_test_table2_.status: pass
 
-  test_validate_equal_fewer_rows_than_negative:
-    project: validate_equal_fewer_rows_than_negative
+  test_fewer_rows_than_negative:
+    project: fewer_rows_than_negative
     sequence:
       - type: dbt
         cmd: deps
