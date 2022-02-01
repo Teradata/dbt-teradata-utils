@@ -1,0 +1,107 @@
+target:
+  type: teradata
+  server: "{{ env_var('DBT_TERADATA_SERVER_NAME', 'localhost') }}"
+  username: "{{ env_var('DBT_TERADATA_USERNAME', 'dbc') }}"
+  password: "{{ env_var('DBT_TERADATA_PASSWORD', 'dbc') }}"
+  schema: "dbt_test_{{ var('_dbt_random_suffix') }}"
+  tmode: ANSI
+  log: "0"
+
+projects:
+  - name: equal_rowcount_passes
+    paths:
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+
+      models/schema.yml: |
+        version: 2
+        models:
+          - name: test_table1
+            tests:
+              - dbt_utils.equal_rowcount:
+                  compare_model: ref('test_table2')
+
+      seeds/test_table1.csv: |
+        id,attrA,attrB
+        1,val1A,val1B
+        2,val2A,val2B
+        3,val3A,val3B
+        4,val4A,val4B
+
+      seeds/test_table2.csv: |
+        id,attrA,attrB
+        1,val1A,val1B
+        2,val2A,val2B
+        3,val3A,val3B
+        4,val4A,val4B
+
+  - name: equal_rowcount_fails
+    paths:
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+
+      models/schema.yml: |
+        version: 2
+        models:
+          - name: test_table1
+            tests:
+              - dbt_utils.equal_rowcount:
+                  compare_model: ref('test_table2')
+
+      seeds/test_table1.csv: |
+        id,attrA,attrB
+        1,val1A,val1B
+        2,val2A,val2B
+        3,val3A,val3B
+        4,val4A,val4B
+
+      seeds/test_table2.csv: |
+        id,attrA,attrB
+        1,val1A,val1B
+        2,val2A,val2B
+        3,val3A,val3B
+
+sequences:
+
+  test_equal_rowcount_passes:
+    project: equal_rowcount_passes
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: run_results
+        exists: True
+      - type: dbt
+        cmd: test
+      - type: run_results
+        exists: True
+        length: 1
+        names:
+          - dbt_utils_equal_rowcount_test_table1_ref_test_table2_
+        attributes:
+          dbt_utils_equal_rowcount_test_table1_ref_test_table2_.status: pass
+
+  test_equal_rowcount_fails:
+    project: equal_rowcount_fails
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: run_results
+        exists: True
+      - type: dbt
+        cmd: test
+        check: false
+      - type: run_results
+        exists: True
+        length: 1
+        names:
+          - dbt_utils_equal_rowcount_test_table1_ref_test_table2_
+        attributes:
+          dbt_utils_equal_rowcount_test_table1_ref_test_table2_.status: fail
