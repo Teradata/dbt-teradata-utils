@@ -8,7 +8,7 @@ target:
   log: "0"
 
 projects:
-  - name: equal_rowcount_passes
+  - name: project_for_check_passes
     paths:
       packages.yml: |
         packages:
@@ -37,7 +37,7 @@ projects:
         3,val3A,val3B
         4,val4A,val4B
 
-  - name: equal_rowcount_fails
+  - name: project_for_check_fails
     paths:
       packages.yml: |
         packages:
@@ -67,8 +67,8 @@ projects:
 
 sequences:
 
-  test_equal_rowcount_passes:
-    project: equal_rowcount_passes
+  test_check_passes:
+    project: project_for_check_passes
     sequence:
       - type: dbt
         cmd: deps
@@ -86,8 +86,8 @@ sequences:
         attributes:
           dbt_utils_equal_rowcount_test_table1_ref_test_table2_.status: pass
 
-  test_equal_rowcount_fails:
-    project: equal_rowcount_fails
+  test_check_fails:
+    project: project_for_check_fails
     sequence:
       - type: dbt
         cmd: deps

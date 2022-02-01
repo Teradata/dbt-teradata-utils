@@ -8,10 +8,10 @@ target:
   log: "0"
 
 projects:
-  - name: fewer_rows_than_passes
+  - name: project_for_check_passes
     paths:
       dbt_project.yml: |
-        name: 'fewer_rows_than_passes'
+        name: 'project_for_check_passes'
         version: '1.0.0'
         config-version: 2
         dispatch:
@@ -47,10 +47,10 @@ projects:
         3,val3A,val3B
         4,val4A,val4B
 
-  - name: fewer_rows_than_fails
+  - name: project_for_check_fails
     paths:
       dbt_project.yml: |
-        name: 'fewer_rows_than_fails'
+        name: 'project_for_check_fails'
         version: '1.0.0'
         config-version: 2
         dispatch:
@@ -88,8 +88,8 @@ projects:
         4,val4A,val4B
 
 sequences:
-  test_fewer_rows_than_passes:
-    project: fewer_rows_than_passes
+  test_check_passes:
+    project: project_for_check_passes
     sequence:
       - type: dbt
         cmd: deps
@@ -107,8 +107,8 @@ sequences:
         attributes:
           dbt_utils_fewer_rows_than_test_table1_ref_test_table2_.status: pass
 
-  test_fewer_rows_than_fails:
-    project: fewer_rows_than_fails
+  test_check_fails:
+    project: project_for_check_fails
     sequence:
       - type: dbt
         cmd: deps

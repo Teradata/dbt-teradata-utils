@@ -8,11 +8,11 @@ target:
   log: "0"
 
 projects:
-  - name: equality_passes
+  - name: project_for_check_passes
     paths:
 
       dbt_project.yml: |
-        name: 'equality_passes'
+        name: 'project_for_check_passes'
         version: '1.0.0'
         config-version: 2
         dispatch:
@@ -48,11 +48,11 @@ projects:
         3,val3A,val3B
         4,val4A,val4B
 
-  - name: equality_fails
+  - name: project_for_check_fails
     paths:
 
       dbt_project.yml: |
-        name: 'equality_fails'
+        name: 'project_for_check_fails'
         version: '1.0.0'
         config-version: 2
         dispatch:
@@ -89,8 +89,8 @@ projects:
         8,val4A,val4B
 
 sequences:
-  test_equality_passes:
-    project: equality_passes
+  test_check_passes:
+    project: project_for_check_passes
     sequence:
       - type: dbt
         cmd: deps
@@ -108,8 +108,8 @@ sequences:
         attributes:
           dbt_utils_equality_test_table1_ref_test_table2_.status: pass
 
-  test_equality_fails:
-    project: equality_fails
+  test_check_fails:
+    project: project_for_check_fails
     sequence:
       - type: dbt
         cmd: deps
