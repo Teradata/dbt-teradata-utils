@@ -27,6 +27,7 @@ Current status:
 | Schema tests          | equal_rowcount                | :white_check_mark:    | no customization needed |
 | Schema tests          | fewer_rows_than               | :white_check_mark:    | custom macro provided   |
 | Schema tests          | equality                      | :white_check_mark:    | no customization needed |
+| Schema tests          | expression_is_true            | :white_check_mark:    | no customization needed |
 | Schema tests          | recency                       | requires custom macro |                         |
 | Schema tests          | at_least_one                  | :white_check_mark:    | no customization needed |
 | Schema tests          | not_constant                  | :white_check_mark:    | no customization needed |
@@ -68,7 +69,6 @@ Current status:
 | Jinja Helpers         | log_info                      |        :question:     |                         |
 | Jinja Helpers         | slugify                       |        :question:     |                         |
 | Materializations      | insert_by_period              |        :question:     |                         |
-| Cross-database macros | width_bucket                  |        :question:     |                         |
 | Jinja Helpers         | pretty_time                   |        :question:     |                         |
 | Jinja Helpers         | pretty_log_format             |        :question:     |                         |
 | Jinja Helpers         | log_info                      |        :question:     |                         |
