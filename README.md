@@ -57,8 +57,8 @@ Current status:
 | Web macros            | get_url_parameter             |        :question:     |                         |
 | Web macros            | get_url_host                  |        :question:     |                         |
 | Web macros            | get_url_path                  |        :question:     |                         |
-| Cross-database macros | current_timestamp             | requires custom macro |                         |
-| Cross-database macros | dateadd                       | requires custom macro |                         |
+| Cross-database macros | current_timestamp             | :white_check_mark:    | custom macro provided   |
+| Cross-database macros | dateadd                       | :white_check_mark:    | custom macro provided   |
 | Cross-database macros | datediff                      |        :question:     |                         |
 | Cross-database macros | split_part                    |        :question:     |                         |
 | Cross-database macros | date_trunc                    |        :question:     |                         |
