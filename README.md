@@ -28,7 +28,7 @@ Current status:
 | Schema tests          | fewer_rows_than               | :white_check_mark:    | custom macro provided   |
 | Schema tests          | equality                      | :white_check_mark:    | no customization needed |
 | Schema tests          | expression_is_true            | :white_check_mark:    | no customization needed |
-| Schema tests          | recency                       | requires custom macro |                         |
+| Schema tests          | recency                       | :white_check_mark:    | custom macro provided   |
 | Schema tests          | at_least_one                  | :white_check_mark:    | no customization needed |
 | Schema tests          | not_constant                  | :white_check_mark:    | no customization needed |
 | Schema tests          | cardinality_equality          | :white_check_mark:    | no customization needed |
