@@ -66,12 +66,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements_dev.txt
 
-          # install timeout command
-          export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=yes
-          export HOMEBREW_NO_INSTALL_CLEANUP=yes
-          export HOMEBREW_NO_INSTALL_UPGRADE=yes
-          brew install coreutils jq
-
       - name: Verify Vantage Express is running
         shell: bash
         run: ./.github/workflows/scripts/verifyVantageIsRunning.sh

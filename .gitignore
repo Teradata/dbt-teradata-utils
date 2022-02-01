@@ -1,0 +1,3 @@
+.pytest_cache/
+.python_version
+dbt_teradata_utils.egg-info/
