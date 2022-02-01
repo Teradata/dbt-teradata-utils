@@ -70,7 +70,9 @@ jobs:
         shell: bash
         run: ./.github/workflows/scripts/verifyVantageIsRunning.sh
       - name: Run pytest tests
-        run: pytest test/integration
+        run: |
+          export DBT_TERADATA_UTILS_ROOT=$PWD
+          pytest test/integration
       - uses: actions/upload-artifact@v2
         if: ${{ failure() ||  cancelled() }}
         with:

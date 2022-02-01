@@ -13,6 +13,7 @@ Here are the steps to run the integration tests:
 
 Assuming the applicable `pytest-dbt-adapter` package is installed and environment variables are set:
 ```bash
+export DBT_TERADATA_UTILS_ROOT=$PWD
 pytest test/integration
 ```
 
@@ -42,6 +43,7 @@ For example:
 export DBT_TERADATA_SERVER_NAME='localhost'
 export DBT_TERADATA_USERNAME='dbc'
 export DBT_TERADATA_PASSWORD='dbc'
+export DBT_TERADATA_UTILS_ROOT=$PWD
 ```
 
 ### Run tests
