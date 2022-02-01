@@ -88,6 +88,93 @@ projects:
         7,val3A,val3B
         8,val4A,val4B
 
+  - name: project_for_check_passes_with_columns
+    paths:
+
+      dbt_project.yml: |
+        name: 'project_for_check_passes_with_columns'
+        version: '1.0.0'
+        config-version: 2
+        dispatch:
+          - macro_namespace: dbt_utils
+            search_order:
+              - teradata_utils
+              - dbt_utils
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+        - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
+
+      models/schema.yml: |
+        version: 2
+        models:
+          - name: test_table1
+            tests:
+              - dbt_utils.equality:
+                  compare_model: ref('test_table2')
+                  compare_columns:
+                    - attrA
+                    - attrB
+
+
+      seeds/test_table1.csv: |
+        id,attrA,attrB
+        1,val1A,val1B
+        2,val2A,val2B
+        3,val3A,val3B
+        4,val4A,val4B
+
+      seeds/test_table2.csv: |
+        id,attrA,attrB
+        5,val1A,val1B
+        6,val2A,val2B
+        7,val3A,val3B
+        8,val4A,val4B
+
+  - name: project_for_check_fails_with_columns
+    paths:
+
+      dbt_project.yml: |
+        name: 'project_for_check_fails_with_columns'
+        version: '1.0.0'
+        config-version: 2
+        dispatch:
+          - macro_namespace: dbt_utils
+            search_order:
+              - teradata_utils
+              - dbt_utils
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+        - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
+
+      models/schema.yml: |
+        version: 2
+        models:
+          - name: test_table1
+            tests:
+              - dbt_utils.equality:
+                  compare_model: ref('test_table2')
+                  compare_columns:
+                    - attrA
+                    - attrB
+
+      seeds/test_table1.csv: |
+        id,attrA,attrB
+        1,val1A,val1B
+        2,val2A,val2B
+        3,val3A,val3B
+        4,val4A,val4B
+
+      seeds/test_table2.csv: |
+        id,attrA,attrB
+        5,val1A,val1B
+        6,val2A,val2B
+        7,val3A,val3B
+        8,val4A,val4BC
+
 sequences:
   test_check_passes:
     project: project_for_check_passes
@@ -127,3 +214,42 @@ sequences:
           - dbt_utils_equality_test_table1_ref_test_table2_
         attributes:
           dbt_utils_equality_test_table1_ref_test_table2_.status: fail
+
+  test_check_passes_with_columns:
+    project: project_for_check_passes_with_columns
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: run_results
+        exists: True
+      - type: dbt
+        cmd: test
+      - type: run_results
+        exists: True
+        length: 1
+        names:
+          - dbt_utils_equality_test_table1_attrA__attrB__ref_test_table2_
+        attributes:
+          dbt_utils_equality_test_table1_attrA__attrB__ref_test_table2_.status: pass
+
+  test_check_fails_with_columns:
+    project: project_for_check_fails_with_columns
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: run_results
+        exists: True
+      - type: dbt
+        cmd: test
+        check: false
+      - type: run_results
+        exists: True
+        length: 1
+        names:
+          - dbt_utils_equality_test_table1_attrA__attrB__ref_test_table2_
+        attributes:
+          dbt_utils_equality_test_table1_attrA__attrB__ref_test_table2_.status: fail
