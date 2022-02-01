@@ -72,6 +72,72 @@ projects:
         2,6,6,36
         3,7,7,49
 
+  - name: project_for_check_passes_with_condition
+    paths:
+      dbt_project.yml: |
+        name: 'project_for_check_passes_with_condition'
+        version: '1.0.0'
+        config-version: 2
+        dispatch:
+          - macro_namespace: dbt_utils
+            search_order:
+              - teradata_utils
+              - dbt_utils
+
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+        - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
+
+      models/schema.yml: |
+        version: 2
+        models:
+          - name: test_table1
+            tests:
+              - dbt_utils.expression_is_true:
+                  expression: "attrA * attrB = total"
+                  condition: id > 1
+
+      seeds/test_table1.csv: |
+        id,attrA,attrB,total
+        1,5,5,253
+        2,6,6,36
+        3,7,7,49
+
+  - name: project_for_check_fails_with_condition
+    paths:
+      dbt_project.yml: |
+        name: 'project_for_check_fails_with_condition'
+        version: '1.0.0'
+        config-version: 2
+        dispatch:
+          - macro_namespace: dbt_utils
+            search_order:
+              - teradata_utils
+              - dbt_utils
+
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+        - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
+
+      models/schema.yml: |
+        version: 2
+        models:
+          - name: test_table1
+            tests:
+              - dbt_utils.expression_is_true:
+                  expression: "attrA * attrB = total"
+                  condition: id < 4
+
+      seeds/test_table1.csv: |
+        id,attrA,attrB,total
+        1,5,5,251
+        2,6,6,36
+        3,7,7,49
+
 sequences:
   test_check_passes:
     project: project_for_check_passes
@@ -111,3 +177,42 @@ sequences:
           - dbt_utils_expression_is_true_test_table1_attrA_attrB_total
         attributes:
           dbt_utils_expression_is_true_test_table1_attrA_attrB_total.status: fail
+
+  test_check_passes_with_condition:
+    project: project_for_check_passes_with_condition
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: run_results
+        exists: True
+      - type: dbt
+        cmd: test
+      - type: run_results
+        exists: True
+        length: 1
+        names:
+          - dbt_utils_expression_is_true_test_table1_id_1__attrA_attrB_total
+        attributes:
+          dbt_utils_expression_is_true_test_table1_id_1__attrA_attrB_total.status: pass
+
+  test_check_fails_with_condition:
+    project: project_for_check_fails_with_condition
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: run_results
+        exists: True
+      - type: dbt
+        cmd: test
+        check: false
+      - type: run_results
+        exists: True
+        length: 1
+        names:
+          - dbt_utils_expression_is_true_test_table1_id_4__attrA_attrB_total
+        attributes:
+          dbt_utils_expression_is_true_test_table1_id_4__attrA_attrB_total.status: fail
