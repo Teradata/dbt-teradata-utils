@@ -1,3 +1,4 @@
+{# Overriding because the original implementation used 'as threshold' but 'threshold' is a reserved word in Teradata #}
 {% macro teradata__test_recency(model, field, datepart, interval) %}
 
 {% set threshold = dbt_utils.dateadd(datepart, interval * -1, dbt_utils.current_timestamp()) %}
