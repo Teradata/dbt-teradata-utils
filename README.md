@@ -22,7 +22,7 @@ dispatch:
 
 Current status:
 
-|     Macro   Group     |           Macro Name          |         Status        |                                 Comment                                |
+|     Macro Group       |           Macro Name          |         Status        |                                 Comment                                |
 |:---------------------:|:-----------------------------:|:---------------------:|:----------------------------------------------------------------------:|
 | Schema tests          | equal_rowcount                | :white_check_mark:    | no customization needed                                                |
 | Schema tests          | fewer_rows_than               | :white_check_mark:    | custom macro provided                                                  |

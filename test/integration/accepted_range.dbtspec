@@ -1,0 +1,243 @@
+target:
+  type: teradata
+  server: "{{ env_var('DBT_TERADATA_SERVER_NAME', 'localhost') }}"
+  username: "{{ env_var('DBT_TERADATA_USERNAME', 'dbc') }}"
+  password: "{{ env_var('DBT_TERADATA_PASSWORD', 'dbc') }}"
+  schema: "dbt_test_{{ var('_dbt_random_suffix') }}"
+  tmode: ANSI
+  log: "0"
+
+projects:
+  - name: project_for_check_passes
+    paths:
+      dbt_project.yml: |
+        name: 'project_for_check_passes'
+        version: '1.0.0'
+        config-version: 2
+        dispatch:
+          - macro_namespace: dbt_utils
+            search_order:
+              - teradata_utils
+              - dbt_utils
+
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+        - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
+
+      models/schema.yml: |
+        version: 2
+        models:
+          - name: test_table1
+            columns:
+              - name: id
+                tests:
+                  - dbt_utils.accepted_range:
+                      min_value: 0
+                      max_value: 100
+                      inclusive: true
+
+      seeds/test_table1.csv: |
+        id
+        1
+        2
+        10
+        50
+        100
+
+  - name: project_for_check_fails
+    paths:
+      dbt_project.yml: |
+        name: 'project_for_check_fails'
+        version: '1.0.0'
+        config-version: 2
+        dispatch:
+          - macro_namespace: dbt_utils
+            search_order:
+              - teradata_utils
+              - dbt_utils
+
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+        - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
+
+      models/schema.yml: |
+        version: 2
+        models:
+          - name: test_table1
+            columns:
+              - name: id
+                tests:
+                  - dbt_utils.accepted_range:
+                      min_value: 0
+                      max_value: 100
+                      inclusive: true
+
+      seeds/test_table1.csv: |
+        id
+        1
+        2
+        10
+        50
+        101
+
+  - name: project_for_check_passes_where
+    paths:
+      dbt_project.yml: |
+        name: 'project_for_check_passes_where'
+        version: '1.0.0'
+        config-version: 2
+        dispatch:
+          - macro_namespace: dbt_utils
+            search_order:
+              - teradata_utils
+              - dbt_utils
+
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+        - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
+
+      models/schema.yml: |
+        version: 2
+        models:
+          - name: test_table1
+            columns:
+              - name: id
+                tests:
+                  - dbt_utils.accepted_range:
+                      min_value: 0
+                      max_value: 100
+                      inclusive: true
+                      where: "created_at < '2022-01-01'"
+
+      seeds/test_table1.csv: |
+        id,created_at
+        1,2022-01-01
+        2,2022-01-01
+        10,2022-01-01
+        50,2022-01-01
+        100,2022-01-01
+        105,2022-02-01
+
+  - name: project_for_check_fails_where
+    paths:
+      dbt_project.yml: |
+        name: 'project_for_check_fails_where'
+        version: '1.0.0'
+        config-version: 2
+        dispatch:
+          - macro_namespace: dbt_utils
+            search_order:
+              - teradata_utils
+              - dbt_utils
+
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+        - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
+
+      models/schema.yml: |
+        version: 2
+        models:
+          - name: test_table1
+            columns:
+              - name: id
+                tests:
+                  - dbt_utils.accepted_range:
+                      min_value: 0
+                      max_value: 100
+                      where: "created_at <= '2022-01-01'"
+
+      seeds/test_table1.csv: |
+        id,created_at
+        1,2022-01-01
+        2,2022-01-01
+        10,2022-01-01
+        50,2022-01-01
+        101,2022-01-01
+        105,2022-02-01
+
+sequences:
+  test_check_passes:
+    project: project_for_check_passes
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: run_results
+        exists: True
+      - type: dbt
+        cmd: test
+      - type: run_results
+        exists: True
+        length: 1
+        names:
+          - dbt_utils_accepted_range_test_table1_id__True__100__0
+        attributes:
+          dbt_utils_accepted_range_test_table1_id__True__100__0.status: pass
+
+  test_check_fails:
+    project: project_for_check_fails
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: run_results
+        exists: True
+      - type: dbt
+        cmd: test
+        check: false
+      - type: run_results
+        exists: True
+        length: 1
+        names:
+          - dbt_utils_accepted_range_test_table1_id__True__100__0
+        attributes:
+          dbt_utils_accepted_range_test_table1_id__True__100__0.status: fail
+
+  test_check_passes_where:
+    project: project_for_check_passes_where
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: run_results
+        exists: True
+      - type: dbt
+        cmd: test
+      - type: run_results
+        exists: True
+        length: 1
+        names:
+          - dbt_utils_accepted_range_test_table1_id__True__100__0
+        attributes:
+          dbt_utils_accepted_range_test_table1_id__True__100__0.status: pass
+
+  test_check_fails_where:
+    project: project_for_check_fails_where
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: run_results
+        exists: True
+      - type: dbt
+        cmd: test
+        check: false
+      - type: run_results
+        exists: True
+        length: 1
+        names:
+          - dbt_utils_accepted_range_test_table1_id__100__0
+        attributes:
+          dbt_utils_accepted_range_test_table1_id__100__0.status: fail
