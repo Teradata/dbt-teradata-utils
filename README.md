@@ -34,6 +34,7 @@ Current status:
 | Schema tests          | cardinality_equality          | :white_check_mark:    | no customization needed                                                |
 | Schema tests          | unique_where                  |        :x:            | no longer supported by dbt-utils, use built-in `unique` test instead   |
 | Schema tests          | not_null_where                |        :x:            | no longer supported by dbt-utils, use built-in `not_null` test instead |
+| Schema tests          | not_null_proportion           | :white_check_mark:    | custom macro provided                                                  |
 | Schema tests          | not_accepted_values           | :white_check_mark:    | no customization needed                                                |
 | Schema tests          | relationships_where           | :white_check_mark:    | no customization needed                                                |
 | Schema tests          | mutually_exclusive_ranges     |        :question:     |                                                                        |
@@ -69,7 +70,6 @@ Current status:
 | Jinja Helpers         | log_info                      |        :question:     |                                                                        |
 | Jinja Helpers         | slugify                       |        :question:     |                                                                        |
 | Materializations      | insert_by_period              |        :question:     |                                                                        |
-| Jinja Helpers         | pretty_time                   |        :question:     |                                                                        |
 | Jinja Helpers         | pretty_log_format             |        :question:     |                                                                        |
 | Jinja Helpers         | log_info                      |        :question:     |                                                                        |
 | Jinja Helpers         | slugify                       |        :question:     |                                                                        |
