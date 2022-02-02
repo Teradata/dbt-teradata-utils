@@ -38,7 +38,7 @@ Current status:
 | Schema tests          | not_accepted_values           | :white_check_mark:    | no customization needed                                                |
 | Schema tests          | relationships_where           | :white_check_mark:    | no customization needed                                                |
 | Schema tests          | mutually_exclusive_ranges     | :white_check_mark:    | custom macro provided                                                  |
-| Schema tests          | sequential_values             |        :question:     |                                                                        |
+| Schema tests          | sequential_values             | :white_check_mark:    | custom macro provided                                                  |
 | Schema tests          | unique_combination_of_columns | :white_check_mark:    | no customization needed                                                |
 | Schema tests          | accepted_range                | :white_check_mark:    | no customization needed                                                |
 | Introspective macros  | get_column_values             |        :question:     |                                                                        |
