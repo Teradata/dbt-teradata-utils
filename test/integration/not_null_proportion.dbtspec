@@ -52,7 +52,7 @@ projects:
   - name: project_for_check_fails
     paths:
       dbt_project.yml: |
-        name: 'project_for_check_passes'
+        name: 'project_for_check_fails'
         version: '1.0.0'
         config-version: 2
         dispatch:
