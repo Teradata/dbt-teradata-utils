@@ -43,7 +43,7 @@ Current status:
 | Schema tests          | accepted_range                | :white_check_mark:    | no customization needed                                                |
 | Introspective macros  | get_column_values             | :white_check_mark:    | custom macro provided                                                  |
 | Introspective macros  | get_relations_by_pattern      | :white_check_mark:    | custom macro provided                                                  |
-| Introspective macros  | get_relations_by_prefix       |        :question:     |                                                                        |
+| Introspective macros  | get_relations_by_prefix       | :white_check_mark:    | custom macro provided                                                  |
 | Introspective macros  | get_query_results_as_dict     |        :question:     |                                                                        |
 | SQL generators        | date_spine                    | requires custom macro |                                                                        |
 | SQL generators        | haversine_distance            | :white_check_mark:    | no customization needed                                                |
