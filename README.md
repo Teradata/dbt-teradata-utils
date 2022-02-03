@@ -7,6 +7,26 @@ This [dbt](https://github.com/dbt-labs/dbt) package contains macros that:
 
 Check [dbt Hub](https://hub.getdbt.com) for the latest installation instructions, or [read the docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
 
+### Additional steps for `surrogate_key` macro
+
+`surrogate_key` macro needs an `md5` function implementation. Teradata doesn't support `md5` natively. You need to install a User Defined Function (UDF):
+1. Download the md5 UDF implementation from Teradata (registration required): https://downloads.teradata.com/download/extensibility/md5-message-digest-udf.
+1. Unzip the package and go to `src` directory.
+1. Start up `bteq` and connect to your database.
+1. Create database `GLOBAL_FUNCTIONS` that will host the UDF. You can't change the database name as it's hardcoded in the macro:
+    ```sql
+    CREATE DATABASE GLOBAL_FUNCTIONS AS PERMANENT = 60e6, SPOOL = 120e6;
+    ```
+1. Create the UDF. Replace `<CURRENT_USER>` with your current database user:
+    ```sql
+    GRANT CREATE FUNCTION ON GLOBAL_FUNCTIONS TO <CURRENT_USER>;
+    DATABASE GLOBAL_FUNCTIONS;
+    .run file = hash_md5.btq
+    ```
+1. Grant permissions to run the UDF to your dbt user. Replace `<DBT_USER>` with the user id you use in dbt:
+    ```sql
+    GRANT EXECUTE FUNCTION ON GLOBAL_FUNCTIONS TO <DBT_USER>;
+    ```
 
 ## Compatibility
 
@@ -51,7 +71,7 @@ Current status:
 | SQL generators        | star                          | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | union_relations               | :white_check_mark:    | custom macro provided                                                  |
 | SQL generators        | generate_series               | :white_check_mark:    | custom macro provided                                                  |
-| SQL generators        | surrogate_key                 | requires custom macro |                                                                        |
+| SQL generators        | surrogate_key                 | :white_check_mark:    | custom macro provided, additional install steps required               |
 | SQL generators        | safe_add                      | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | pivot                         |        :question:     |                                                                        |
 | SQL generators        | unpivot                       |        :question:     |                                                                        |
