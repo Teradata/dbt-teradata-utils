@@ -1,5 +1,6 @@
 {# Overriding because the original implementation used 'numeric' type to force float output. numeric in Teradata defaults to integer #}
 {# You have specify precision, to get a float, e.g. numeric(5,2) #}
+
 {% macro teradata__test_not_null_proportion(model) %}
 
 {% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}

@@ -1,5 +1,6 @@
 {# Overriding because the original implementation used 'SELECT *,..'. Teradata allows '*' with other columns in a select statement #}
 {# only when '*' is qualified with a table/view name #}
+
 {% macro teradata__test_fewer_rows_than(model, compare_model) %}
 
 {{ config(fail_calc = 'coalesce(row_count_delta, 0)') }}

@@ -1,6 +1,7 @@
 {# Overriding because the original implementation:  #}
 {# - used '=1' test to return boolean. In Teradata it is supported by 'CASE' expression. #}
 {# - used '*,' in 'SELECT' statement. In Teradata, '*,' must be qualified with table name. #}
+
 {% macro default__test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed', zero_length_range_allowed=False) %}
 {% if gaps == 'not_allowed' %}
     {% set allow_gaps_operator='=' %}
