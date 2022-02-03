@@ -1,11 +1,22 @@
 # dbt-teradata-utils
 
-This [dbt](https://github.com/dbt-labs/dbt) package contains macros that:
-- define Teradata-specific implementations of [dispatched macros](https://docs.getdbt.com/reference/dbt-jinja-functions/dispatch) from other packages
+This [dbt](https://github.com/dbt-labs/dbt) package contains macros that define Teradata-specific implementations of [dispatched macros](https://docs.getdbt.com/reference/dbt-jinja-functions/dispatch) from other packages.
 
 ## Installation Instructions
 
-Check [dbt Hub](https://hub.getdbt.com) for the latest installation instructions, or [read the docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
+1. Add the package as a dependency to your project in `packages.yml`:
+    ```
+    packages:
+    - package: teradata/teradata_utils
+      version: 0.0.1
+    ```
+    For more information about installing packages, see [dbt documentation](https://docs.getdbt.com/docs/package-management).
+1. Set the `dispatch` config in your root project (on dbt v0.20.0 and newer) and let `teradata_utils` package intercept macros from the `dbt_utils` namespace:
+    ```
+    dispatch:
+      - macro_namespace: dbt_utils
+        search_order: ['teradata_utils', 'dbt_utils']
+    ```
 
 ### Additional steps for `surrogate_key` macro
 
@@ -30,8 +41,7 @@ Check [dbt Hub](https://hub.getdbt.com) for the latest installation instructions
 
 ## Compatibility
 
-This package provides "shims" for:
-- [dbt_utils](https://github.com/dbt-labs/dbt-utils)
+This package provides "shims" for [dbt_utils](https://github.com/dbt-labs/dbt-utils).
 
 In order to use these "shims," you should set a `dispatch` config in your root project (on dbt v0.20.0 and newer). For example, with this project setting, dbt will first search for macro implementations inside the `teradata_utils` package when resolving macros from the `dbt_utils` namespace:
 ```
