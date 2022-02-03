@@ -49,7 +49,7 @@ Current status:
 | SQL generators        | haversine_distance            | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | group_by                      | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | star                          | :white_check_mark:    | no customization needed                                                |
-| SQL generators        | union_relations               | requires custom macro |                                                                        |
+| SQL generators        | union_relations               | :white_check_mark:    | custom macro provided                                                  |
 | SQL generators        | generate_series               | requires custom macro |                                                                        |
 | SQL generators        | surrogate_key                 | requires custom macro |                                                                        |
 | SQL generators        | safe_add                      | :white_check_mark:    | no customization needed                                                |
