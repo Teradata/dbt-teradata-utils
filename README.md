@@ -81,7 +81,7 @@ Current status:
 | Cross-database macros | current_timestamp             | :white_check_mark:    | custom macro provided                                                  |
 | Cross-database macros | dateadd                       | :white_check_mark:    | custom macro provided                                                  |
 | Cross-database macros | datediff                      | :white_check_mark:    | custom macro provided                                                  |
-| Cross-database macros | split_part                    |        :question:     |                                                                        |
+| Cross-database macros | split_part                    | :white_check_mark:    | custom macro provided                                                  |
 | Cross-database macros | date_trunc                    |        :question:     |                                                                        |
 | Cross-database macros | last_day                      |        :question:     |                                                                        |
 | Cross-database macros | width_bucket                  |        :question:     |                                                                        |
