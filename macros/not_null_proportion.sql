@@ -7,19 +7,19 @@
 {% set at_least = kwargs.get('at_least', kwargs.get('arg')) %}
 {% set at_most = kwargs.get('at_most', kwargs.get('arg', 1)) %}
 
-with validation as (
-  select
-    sum(case when {{ column_name }} is null then 0 else 1 end) / cast(count(*) as numeric(5,2)) as not_null_proportion
+WITH validation AS (
+  SELECT
+    sum(CASE WHEN {{ column_name }} iS NULL THEN 0 ELSE 1 END) / cast(count(*) AS numeric(5,2)) AS not_null_proportion
   from {{ model }}
 ),
-validation_errors as (
-  select
+validation_errors AS (
+  SELECT
     not_null_proportion
-  from validation
-  where not_null_proportion < {{ at_least }} or not_null_proportion > {{ at_most }}
+  FROM validation
+  WHERE not_null_proportion < {{ at_least }} OR not_null_proportion > {{ at_most }}
 )
-select
+SELECT
   *
-from validation_errors
+FROM validation_errors
 
 {% endmacro %}

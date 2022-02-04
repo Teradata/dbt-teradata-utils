@@ -62,23 +62,23 @@
     {%- for relation in relations %}
 
 
-            select
+            SELECT
 
-                cast({{ dbt_utils.string_literal(relation) }} as {{ dbt_utils.type_string() }}) as {{ source_column_name }},
+                cast({{ dbt_utils.string_literal(relation) }} AS {{ dbt_utils.type_string() }}) AS {{ source_column_name }},
                 {% for col_name in ordered_column_names -%}
 
                     {%- set col = column_superset[col_name] %}
                     {%- set col_type = column_override.get(col.column, col.data_type) %}
                     {%- set col_name = adapter.quote(col_name) if col_name in relation_columns[relation] else 'null' %}
-                    cast({{ col_name }} as {{ col_type }}) as {{ col.quoted }} {% if not loop.last %},{% endif -%}
+                    cast({{ col_name }} AS {{ col_type }}) AS {{ col.quoted }} {% if not loop.last %},{% endif -%}
 
                 {%- endfor %}
 
-            from {{ relation }}
+            FROM {{ relation }}
 
 
         {% if not loop.last -%}
-            union all
+            UNION ALL
         {% endif -%}
 
     {%- endfor -%}

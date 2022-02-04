@@ -5,40 +5,40 @@
 
 {{ config(fail_calc = 'coalesce(row_count_delta, 0)') }}
 
-with a as (
+WITH a AS (
 
-    select count(*) as count_our_model from {{ model }}
-
-),
-b as (
-
-    select count(*) as count_comparison_model from {{ compare_model }}
+    SELECT count(*) AS count_our_model FROM {{ model }}
 
 ),
-counts as (
+b AS (
 
-    select
+    SELECT count(*) AS count_comparison_model FROM {{ compare_model }}
+
+),
+counts AS (
+
+    SELECT
         count_our_model,
         count_comparison_model
-    from a
-    cross join b
+    FROM a
+    CROSS JOIN b
 
 ),
-final as (
+final AS (
 
-    select counts.*,
-        case
+    SELECT counts.*,
+        CASE
             -- fail the test if we have more rows than the reference model and return the row count delta
-            when count_our_model > count_comparison_model then (count_our_model - count_comparison_model)
+            WHEN count_our_model > count_comparison_model THEN (count_our_model - count_comparison_model)
             -- fail the test if they are the same number
-            when count_our_model = count_comparison_model then 1
+            WHEN count_our_model = count_comparison_model THEN 1
             -- pass the test if the delta is positive (i.e. return the number 0)
-            else 0
-    end as row_count_delta
-    from counts
+            ELSE 0
+    END AS row_count_delta
+    FROM counts
 
 )
 
-select * from final
+SELECT * FROM final
 
 {% endmacro %}

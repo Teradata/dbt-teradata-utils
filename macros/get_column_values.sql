@@ -31,15 +31,15 @@
         {%- else -%}
 
 
-            select
-                {{ column }} as _value
+            SELECT
+                {{ column }} AS _value
 
-            from {{ target_relation }}
-            group by {{ column }}
-            order by {{ order_by }}
+            FROM {{ target_relation }}
+            GROUP BY {{ column }}
+            ORDER BY {{ order_by }}
 
             {% if max_records is not none %}
-            limit {{ max_records }}
+            LIMIT {{ max_records }}
             {% endif %}
 
         {% endif %}

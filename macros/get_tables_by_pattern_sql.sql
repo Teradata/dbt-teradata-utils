@@ -2,17 +2,17 @@
 
 {% macro default__get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
 
-        select distinct
-            DatabaseName as "table_schema",
-            TableName as "table_name",
-            case
-              when TableKind = 'T' then 'table'
-              when TableKind = 'V' then 'view'
-              else TableKind
-            end as table_type
-        from dbc.tablesV
-        where DatabaseName like '{{ schema_pattern }}' (NOT CASESPECIFIC)
-        and TableName like '{{ table_pattern }}' (NOT CASESPECIFIC)
-        and TableName not like '{{ exclude }}' (NOT CASESPECIFIC)
+        SELECT DISTINCT
+            DatabaseName AS "table_schema",
+            TableName AS "table_name",
+            CASE
+              WHEN TableKind = 'T' THEN 'table'
+              WHEN TableKind = 'V' THEN 'view'
+              ELSE TableKind
+            END AS table_type
+        FROM dbc.tablesV
+        WHERE DatabaseName LIKE '{{ schema_pattern }}' (NOT CASESPECIFIC)
+        AND TableName LIKE '{{ table_pattern }}' (NOT CASESPECIFIC)
+        AND TableName NOT LIKE '{{ exclude }}' (NOT CASESPECIFIC)
 
 {% endmacro %}

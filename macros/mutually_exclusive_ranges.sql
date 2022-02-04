@@ -31,37 +31,37 @@
 
 {% set partition_clause="partition by " ~ partition_by if partition_by else '' %}
 
-with window_functions as (
+WITH window_functions AS (
 
-    select
+    SELECT
         {% if partition_by %}
-        {{ partition_by }} as partition_by_col,
+        {{ partition_by }} AS partition_by_col,
         {% endif %}
-        {{ lower_bound_column }} as lower_bound,
-        {{ upper_bound_column }} as upper_bound,
+        {{ lower_bound_column }} AS lower_bound,
+        {{ upper_bound_column }} AS upper_bound,
 
-        lead({{ lower_bound_column }}) over (
+        lead({{ lower_bound_column }}) OVER (
             {{ partition_clause }}
-            order by {{ lower_bound_column }}
-        ) as next_lower_bound,
+            ORDER BY {{ lower_bound_column }}
+        ) AS next_lower_bound,
 
-        CASE row_number() over (
+        CASE row_number() OVER (
             {{ partition_clause }}
-	          order by {{ lower_bound_column }} desc
+	          ORDER BY {{ lower_bound_column }} DESC
 	        )
 	        WHEN 1 THEN 1
 	        ELSE 0
         END
-        as is_last_record
+        AS is_last_record
 
-    from {{ model }}
+    FROM {{ model }}
 
 ),
 
-calc as (
+calc AS (
     -- We want to return records where one of our assumptions fails, so we'll use
     -- the `not` function with `and` statements so we can write our assumptions nore cleanly
-    select
+    SELECT
         window_functions.*,
 
         -- For each record: lower_bound should be < upper_bound.
@@ -86,19 +86,19 @@ calc as (
             END,
             is_last_record,
             0
-        ) as upper_bound_{{ allow_gaps_operator_in_words }}_next_lower_bound
+        ) AS upper_bound_{{ allow_gaps_operator_in_words }}_next_lower_bound
 
-    from window_functions
+    FROM window_functions
 
 ),
 
-validation_errors as (
+validation_errors AS (
 
-    select
+    SELECT
         *
-    from calc
+    FROM calc
 
-    where
+    WHERE
         -- THE FOLLOWING SHOULD BE TRUE --
         CASE lower_bound_{{ allow_zero_length_operator_in_words }}_upper_bound + upper_bound_{{ allow_gaps_operator_in_words }}_next_lower_bound
         	WHEN 2 THEN 1
@@ -107,5 +107,5 @@ validation_errors as (
 
 )
 
-select * from validation_errors
+SELECT * FROM validation_errors
 {% endmacro %}

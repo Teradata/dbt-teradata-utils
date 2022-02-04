@@ -4,5 +4,5 @@
 {# See README for details. #}
 
 {% macro teradata__hash(field) -%}
-    GLOBAL_FUNCTIONS.hash_md5(cast({{field}} as {{dbt_utils.type_string()}}))
+    GLOBAL_FUNCTIONS.hash_md5(cast({{field}} AS {{dbt_utils.type_string()}}))
 {%- endmacro %}

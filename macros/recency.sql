@@ -3,19 +3,18 @@
 
 {% set threshold = dbt_utils.dateadd(datepart, interval * -1, dbt_utils.current_timestamp()) %}
 
-with recency as (
+WITH recency AS (
 
-    select max({{field}}) as most_recent
-    from {{ model }}
+    SELECT max({{field}}) AS most_recent
+    FROM {{ model }}
 
 )
 
-select
-
+SELECT
     most_recent,
-    {{ threshold }} as _threshold
+    {{ threshold }} AS _threshold
 
-from recency
-where most_recent < {{ threshold }}
+FROM recency
+WHERE most_recent < {{ threshold }}
 
 {% endmacro %}
