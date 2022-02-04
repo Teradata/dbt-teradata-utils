@@ -1,3 +1,16 @@
+## teradata_utils 0.1.0
+
+### Features
+* Added tests and/or implementations for the following `dbt_utils` macros:
+  * 
+
+### Fixes
+
+### Docs
+
+### Under the hood
+
+---
 ## teradata_utils 0.0.2
 
 ### Features
