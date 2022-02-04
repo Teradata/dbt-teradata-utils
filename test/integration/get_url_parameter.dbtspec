@@ -19,6 +19,14 @@ projects:
             search_order:
               - teradata_utils
               - dbt_utils
+        seeds:
+          project_for_test: # you must include the project name
+            test_table1:
+              +column_types:
+                date: date
+                size: varchar(1)
+                color: varchar(5)
+                status: varchar(15)
 
       packages.yml: |
         packages:
@@ -26,23 +34,21 @@ projects:
           version: 0.8.0
         - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
 
+      seeds/urls.csv: |
+          id,url
+          1,https://github.com/dbt-labs/dbt-utils#pivot-source?utm_source=123
+          2,https://search.google.com/u/1/search-console/mobile-usability?resource_id=https://quickstarts.teradata.com/&utm_source=123&utm_medium=gamma&utm_campaign=wnc_10030322&utm_content=msg_100058679&hl=en
+
       models/report.sql: |
         {{
           config(
             materialized="table"
           )
         }}
-        SELECT {{ dbt_utils.split_part(string_text='\'1,2,3\'', delimiter_text='\',\'', part_number=2) }} AS split_result
-        WHERE split_result = '2'
+        SELECT {{ dbt_utils.get_url_parameter(field='url', url_parameter='utm_source') }} AS utm_source_value
+        FROM {{ ref('urls') }}
+        WHERE utm_source_value = '123'
 
-      models/report2.sql: |
-        {{
-          config(
-            materialized="table"
-          )
-        }}
-        SELECT {{ dbt_utils.split_part(string_text='\'1param2\'', delimiter_text='\'param\'', part_number=2) }} AS split_result
-        WHERE split_result = '2'
 
 sequences:
   test:
@@ -51,15 +57,13 @@ sequences:
       - type: dbt
         cmd: deps
       - type: dbt
+        cmd: seed
+      - type: dbt
         cmd: run
       - type: run_results
         exists: True
         names:
           - report
-          - report2
       - type: relation_rows
         name: report
-        length: 1
-      - type: relation_rows
-        name: report2
-        length: 1
+        length: 2
