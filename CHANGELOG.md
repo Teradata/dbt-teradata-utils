@@ -8,6 +8,7 @@
   * date_trunc
   * last_day
   * width_bucket
+  * pretty_time
 
 ### Fixes
 * `split_part` now correctly detects single character delimiters by distinguishing between literals and column names.
