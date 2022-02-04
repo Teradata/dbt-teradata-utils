@@ -13,7 +13,7 @@
 
 ### Under the hood
 
-
+---
 ## teradata_utils 0.0.1
 
 ### Features
