@@ -1,0 +1,75 @@
+target:
+  type: teradata
+  server: "{{ env_var('DBT_TERADATA_SERVER_NAME', 'localhost') }}"
+  username: "{{ env_var('DBT_TERADATA_USERNAME', 'dbc') }}"
+  password: "{{ env_var('DBT_TERADATA_PASSWORD', 'dbc') }}"
+  schema: "dbt_test_{{ var('_dbt_random_suffix') }}"
+  tmode: ANSI
+  log: "0"
+
+projects:
+  - name: project_for_test
+    paths:
+      dbt_project.yml: |
+        name: 'project_for_test'
+        version: '1.0.0'
+        config-version: 2
+        dispatch:
+          - macro_namespace: dbt_utils
+            search_order:
+              - teradata_utils
+              - dbt_utils
+
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+        - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
+
+      seeds/test_table1.csv: |
+          id,attrA,created_at
+          1,val1A,2018-01-01
+          2,val2A,2018-01-02
+          3,val2A,2018-01-03
+          4,val3A,2018-01-04
+          5,val3A,2018-01-05
+          6,val3A,2018-01-06
+          7,val4A,2018-01-07
+          8,val4A,2018-01-08
+          9,val4A,2018-01-09
+
+      models/report.sql: |
+        {{
+          config(
+            materialized = "insert_by_period",
+            period = "week",
+            timestamp_field = "created_at",
+            start_date = "2018-01-01",
+            stop_date = "2018-06-01")
+        }}
+
+        with events as (
+
+          select *
+          from {{ ref('test_table1') }}
+          where __PERIOD_FILTER__ -- This will be replaced with a filter in the materialization code
+
+        )
+
+sequences:
+  test:
+    project: project_for_test
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: dbt
+        cmd: run
+      - type: run_results
+        exists: True
+        names:
+          - report
+      - type: relation_rows
+        name: report
+        length: 1
