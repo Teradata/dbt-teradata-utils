@@ -73,7 +73,7 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
 | SQL generators        | generate_series               | :white_check_mark:    | custom macro provided                                                  |
 | SQL generators        | surrogate_key                 | :white_check_mark:    | custom macro provided, additional install steps required               |
 | SQL generators        | safe_add                      | :white_check_mark:    | no customization needed                                                |
-| SQL generators        | pivot                         |        :question:     |                                                                        |
+| SQL generators        | pivot                         | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | unpivot                       | :white_check_mark:    | no customization needed, see [compatibility note](#unpivot)            |
 | Web macros            | get_url_parameter             |        :question:     |                                                                        |
 | Web macros            | get_url_host                  |        :question:     |                                                                        |
