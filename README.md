@@ -108,7 +108,7 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
 }}
 ```
 
-### <a name="last_day"></a>unpivot
+### <a name="last_day"></a>last_day
 
 `last_day` in `teradata_utils`, unlike the corresponding macro in `dbt_utils`, doesn't support `quarter` datepart.
 ### Note to maintainers of other packages
