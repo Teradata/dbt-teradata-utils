@@ -86,7 +86,7 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
 | Cross-database macros | last_day                      | :white_check_mark:    | no customization needed, see [compatibility note](#last_day)           |
 | Cross-database macros | width_bucket                  | :white_check_mark:    | no customization needed                                                |
 | Jinja Helpers         | pretty_time                   | :white_check_mark:    | no customization needed                                                |
-| Jinja Helpers         | pretty_log_format             |        :question:     |                                                                        |
+| Jinja Helpers         | pretty_log_format             | :white_check_mark:    | no customization needed                                                |
 | Jinja Helpers         | log_info                      |        :question:     |                                                                        |
 | Jinja Helpers         | slugify                       |        :question:     |                                                                        |
 | Materializations      | insert_by_period              |        :question:     |                                                                        |
