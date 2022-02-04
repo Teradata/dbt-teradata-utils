@@ -2,7 +2,7 @@
 
 ### Features
 * Added tests and/or implementations for the following `dbt_utils` macros:
-  * 
+  * get_url_host
 
 ### Fixes
 

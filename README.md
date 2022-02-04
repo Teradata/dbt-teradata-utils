@@ -75,8 +75,8 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
 | SQL generators        | safe_add                      | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | pivot                         | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | unpivot                       | :white_check_mark:    | no customization needed, see [compatibility note](#unpivot)            |
-| Web macros            | get_url_parameter             |        :question:     |                                                                        |
-| Web macros            | get_url_host                  |        :question:     |                                                                        |
+| Web macros            | get_url_parameter             | :white_check_mark:    | no customization needed                                                |
+| Web macros            | get_url_host                  | :white_check_mark:    | no customization needed                                                |
 | Web macros            | get_url_path                  |        :question:     |                                                                        |
 | Cross-database macros | current_timestamp             | :white_check_mark:    | custom macro provided                                                  |
 | Cross-database macros | dateadd                       | :white_check_mark:    | custom macro provided                                                  |
