@@ -43,6 +43,24 @@ projects:
         SELECT {{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }} AS _sum_of_dates
         WHERE _sum_of_dates = '2017-01-02'
 
+      models/report2.sql: |
+        {{
+          config(
+            materialized="table"
+          )
+        }}
+        SELECT {{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="to_date('2017-01-01')") }} AS _sum_of_dates
+        WHERE _sum_of_dates = '2017-01-02'
+
+      models/report3.sql: |
+        {{
+          config(
+            materialized="table"
+          )
+        }}
+        SELECT {{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="to_timestamp('2017-01-01 15:30:39.500')") }} AS _sum_of_dates
+        WHERE _sum_of_dates = '2017-01-02 15:30:39.500'
+
 
 sequences:
   test:
@@ -56,6 +74,14 @@ sequences:
         exists: True
         names:
           - report
+          - report2
+          - report3
       - type: relation_rows
         name: report
+        length: 1
+      - type: relation_rows
+        name: report2
+        length: 1
+      - type: relation_rows
+        name: report3
         length: 1
