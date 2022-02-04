@@ -71,7 +71,7 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
 | SQL generators        | star                          | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | union_relations               | :white_check_mark:    | custom macro provided                                                  |
 | SQL generators        | generate_series               | :white_check_mark:    | custom macro provided                                                  |
-| SQL generators        | surrogate_key                 | :white_check_mark:    | custom macro provided, additional install steps required               |
+| SQL generators        | surrogate_key                 | :white_check_mark:    | custom macro provided, [additional install steps required](#additional-steps-for-surrogate_key-macro)               |
 | SQL generators        | safe_add                      | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | pivot                         | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | unpivot                       | :white_check_mark:    | no customization needed, see [compatibility note](#unpivot)            |
