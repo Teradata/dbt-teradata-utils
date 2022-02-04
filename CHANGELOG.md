@@ -7,7 +7,8 @@
   * current_timestamp
 
 ### Fixes
-* `split_part` now correctly detects single character delimiters by distinguishing between literals and column names. 
+* `split_part` now correctly detects single character delimiters by distinguishing between literals and column names.
+* `dateadd` can now take both date literals and date types. It supported only date types and not literals which was not aligned with the interface defined by dbt_utils. 
 
 ### Docs
 
