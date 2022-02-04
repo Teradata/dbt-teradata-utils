@@ -4,6 +4,7 @@
 * Added tests and/or implementations for the following `dbt_utils` macros:
   * get_url_host
   * get_url_path
+  * current_timestamp
 
 ### Fixes
 * `split_part` now correctly detects single character delimiters by distinguishing between literals and column names. 
