@@ -88,7 +88,7 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
 | Jinja Helpers         | pretty_time                   | :white_check_mark:    | no customization needed                                                |
 | Jinja Helpers         | pretty_log_format             | :white_check_mark:    | no customization needed                                                |
 | Jinja Helpers         | log_info                      | :white_check_mark:    | no customization needed                                                |
-| Jinja Helpers         | slugify                       |        :question:     |                                                                        |
+| Jinja Helpers         | slugify                       | :white_check_mark:    | no customization needed                                                |
 | Materializations      | insert_by_period              |        :question:     |                                                                        |
 
 
