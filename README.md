@@ -83,7 +83,7 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
 | Cross-database macros | datediff                      | :white_check_mark:    | custom macro provided                                                  |
 | Cross-database macros | split_part                    | :white_check_mark:    | custom macro provided                                                  |
 | Cross-database macros | date_trunc                    | :white_check_mark:    | custom macro provided                                                  |
-| Cross-database macros | last_day                      |        :question:     |                                                                        |
+| Cross-database macros | last_day                      | :white_check_mark:    | no customization needed, see [compatibility note](#last_day)            |
 | Cross-database macros | width_bucket                  |        :question:     |                                                                        |
 | Jinja Helpers         | pretty_time                   |        :question:     |                                                                        |
 | Jinja Helpers         | pretty_log_format             |        :question:     |                                                                        |
@@ -92,7 +92,7 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
 | Materializations      | insert_by_period              |        :question:     |                                                                        |
 
 
-### <a name="pookie"></a>unpivot
+### <a name="unpivot"></a>unpivot
 
 `unpivot` uses `value` as the default name for the value column. `value` is a reserved word in Teradata. Make sure you specify a different value in `value_name` parameter, e.g.:
 ```
@@ -107,6 +107,10 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
   ) 
 }}
 ```
+
+### <a name="last_day"></a>unpivot
+
+`last_day` in `teradata_utils`, unlike the corresponding macro in `dbt_utils`, doesn't support `quarter` datepart.
 ### Note to maintainers of other packages
 
 The teradata-utils package may be able to provide compatibility for your package, especially if your package leverages dbt-utils macros for cross-database compatibility. This package _does not_ need to be specified as a dependency of your package in `packages.yml`. Instead, you should encourage anyone using your package on Teradata to:

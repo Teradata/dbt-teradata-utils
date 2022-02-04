@@ -40,8 +40,8 @@ projects:
             materialized="table"
           )
         }}
-        SELECT {{ dbt_utils.date_trunc('month', "'2017-02-05'") }} as truncated_date
-        WHERE truncated_date = '2017-02-01'
+        SELECT {{ dbt_utils.last_day("'2017-01-05'", 'month') }} as last_day
+        WHERE last_day = '2017-01-31'
 
       models/report2.sql: |
         {{
@@ -49,8 +49,8 @@ projects:
             materialized="table"
           )
         }}
-        SELECT {{ dbt_utils.date_trunc('month', "to_date('2017-02-05')") }} as truncated_date
-        WHERE truncated_date = '2017-02-01'
+        SELECT {{ dbt_utils.last_day("to_date('2017-02-05')", 'month') }} as last_day
+        WHERE last_day = '2017-02-28'
 
 sequences:
   test:
