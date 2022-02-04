@@ -1,6 +1,6 @@
-# dbt-teradata-utils
+# dbt package `teradata_utils`
 
-This [dbt](https://github.com/dbt-labs/dbt) package contains macros that define Teradata-specific implementations of [dispatched macros](https://docs.getdbt.com/reference/dbt-jinja-functions/dispatch) from other packages.
+This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with `dbt_utils` package for Teradata Vantage.
 
 ## Installation Instructions
 
