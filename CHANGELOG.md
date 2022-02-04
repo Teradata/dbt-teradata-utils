@@ -5,6 +5,7 @@
   * get_url_host
   * get_url_path
   * current_timestamp
+  * date_trunc
 
 ### Fixes
 * `split_part` now correctly detects single character delimiters by distinguishing between literals and column names.
