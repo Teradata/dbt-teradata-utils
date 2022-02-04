@@ -1,0 +1,77 @@
+target:
+  type: teradata
+  server: "{{ env_var('DBT_TERADATA_SERVER_NAME', 'localhost') }}"
+  username: "{{ env_var('DBT_TERADATA_USERNAME', 'dbc') }}"
+  password: "{{ env_var('DBT_TERADATA_PASSWORD', 'dbc') }}"
+  schema: "dbt_test_{{ var('_dbt_random_suffix') }}"
+  tmode: ANSI
+  log: "0"
+
+projects:
+  - name: project_for_test
+    paths:
+      dbt_project.yml: |
+        name: 'project_for_test'
+        version: '1.0.0'
+        config-version: 2
+        dispatch:
+          - macro_namespace: dbt_utils
+            search_order:
+              - teradata_utils
+              - dbt_utils
+        seeds:
+          project_for_test: # you must include the project name
+            test_table1:
+              +column_types:
+                date: date
+                size: varchar(1)
+                color: varchar(5)
+                status: varchar(15)
+
+      packages.yml: |
+        packages:
+        - package: dbt-labs/dbt_utils
+          version: 0.8.0
+        - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
+
+      seeds/test_table1.csv: |
+          id,_value
+          1,10
+          2,20
+          3,30
+          4,40
+          5,50
+          6,60
+          7,70
+          8,80
+          9,90
+
+
+      models/report.sql: |
+        {{
+          config(
+            materialized="table"
+          )
+        }}
+        SELECT id, _value, {{ dbt_utils.width_bucket('_value', 0, 90, 5) }} AS _buckets
+        FROM {{ ref('test_table1') }}
+        WHERE _buckets <= 6
+
+
+sequences:
+  test:
+    project: project_for_test
+    sequence:
+      - type: dbt
+        cmd: deps
+      - type: dbt
+        cmd: seed
+      - type: dbt
+        cmd: run
+      - type: run_results
+        exists: True
+        names:
+          - report
+      - type: relation_rows
+        name: report
+        length: 9
