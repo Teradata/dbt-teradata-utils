@@ -41,16 +41,6 @@ This [dbt](https://github.com/dbt-labs/dbt) package contains macros that define 
 
 ## Compatibility
 
-This package provides "shims" for [dbt_utils](https://github.com/dbt-labs/dbt-utils).
-
-In order to use these "shims," you should set a `dispatch` config in your root project (on dbt v0.20.0 and newer). For example, with this project setting, dbt will first search for macro implementations inside the `teradata_utils` package when resolving macros from the `dbt_utils` namespace:
-```
-dispatch:
-  - macro_namespace: dbt_utils
-    search_order: ['teradata_utils', 'dbt_utils']
-```
-
-Current status:
 
 |     Macro Group       |           Macro Name          |         Status        |                                 Comment                                |
 |:---------------------:|:-----------------------------:|:---------------------:|:----------------------------------------------------------------------:|
@@ -84,7 +74,7 @@ Current status:
 | SQL generators        | surrogate_key                 | :white_check_mark:    | custom macro provided, additional install steps required               |
 | SQL generators        | safe_add                      | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | pivot                         |        :question:     |                                                                        |
-| SQL generators        | unpivot                       |        :question:     |                                                                        |
+| SQL generators        | unpivot                       | :white_check_mark:    | no customization needed, see [compatibility note](#unpivot)            |
 | Web macros            | get_url_parameter             |        :question:     |                                                                        |
 | Web macros            | get_url_host                  |        :question:     |                                                                        |
 | Web macros            | get_url_path                  |        :question:     |                                                                        |
@@ -101,6 +91,22 @@ Current status:
 | Jinja Helpers         | slugify                       |        :question:     |                                                                        |
 | Materializations      | insert_by_period              |        :question:     |                                                                        |
 
+
+### <a name="pookie"></a>unpivot
+
+`unpivot` uses `value` as the default name for the value column. `value` is a reserved word in Teradata. Make sure you specify a different value in `value_name` parameter, e.g.:
+```
+{{ 
+  dbt_utils.unpivot(
+    relation=ref('table_name'),
+    cast_to='datatype',
+    exclude=[<list of columns to exclude from unpivot>],
+    remove=[<list of columns to remove>],
+    field_name=<column name for field>,
+    value_name='_value'
+  ) 
+}}
+```
 ### Note to maintainers of other packages
 
 The teradata-utils package may be able to provide compatibility for your package, especially if your package leverages dbt-utils macros for cross-database compatibility. This package _does not_ need to be specified as a dependency of your package in `packages.yml`. Instead, you should encourage anyone using your package on Teradata to:
