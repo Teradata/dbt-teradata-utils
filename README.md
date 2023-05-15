@@ -7,7 +7,7 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
 1. Add the package as a dependency to your project in `packages.yml`:
     ```
     packages:
-    - package: teradata/teradata_utils
+    - package: Teradata/teradata_utils
       version: 0.1.0
     ```
     For more information about installing packages, see [dbt documentation](https://docs.getdbt.com/docs/package-management).
