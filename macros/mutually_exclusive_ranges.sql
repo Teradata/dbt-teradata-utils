@@ -2,7 +2,7 @@
 {# - used '=1' test to return boolean. In Teradata it is supported by 'CASE' expression. #}
 {# - used '*,' in 'SELECT' statement. In Teradata, '*,' must be qualified with table name. #}
 
-{% macro default__test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed', zero_length_range_allowed=False) %}
+{% macro teradata__test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed', zero_length_range_allowed=False) %}
 {% if gaps == 'not_allowed' %}
     {% set allow_gaps_operator='=' %}
     {% set allow_gaps_operator_in_words='equal_to' %}
@@ -42,12 +42,12 @@ WITH window_functions AS (
 
         lead({{ lower_bound_column }}) OVER (
             {{ partition_clause }}
-            ORDER BY {{ lower_bound_column }}
+            ORDER BY {{ lower_bound_column }}, {{ upper_bound_column }}
         ) AS next_lower_bound,
 
         CASE row_number() OVER (
             {{ partition_clause }}
-	          ORDER BY {{ lower_bound_column }} DESC
+	          ORDER BY {{ lower_bound_column }} DESC, {{ upper_bound_column }} DESC
 	        )
 	        WHEN 1 THEN 1
 	        ELSE 0
