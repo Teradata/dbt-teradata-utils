@@ -45,6 +45,6 @@ deprecated in a future release of dbt-utils. The {}.{} model triggered this warn
 
 {%- endfor -%}
 
-{{dbt_utils.hash(dbt_utils.concat(fields))}}
+{{dbt.hash(dbt.concat(fields))}}
 
 {%- endmacro -%}
