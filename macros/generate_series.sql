@@ -9,22 +9,22 @@
 
     SELECT cast(
     {% for i in range(n) %}
-    p{{i}}.generated_number * power(2, {{i}})
+    p{{i}}.gen_number * power(2, {{i}})
     {% if not loop.last %} + {% endif %}
     {% endfor %}
     + 1
-    AS integer) AS gen_number
+    AS integer) AS generated_number
 
     from
 
     {% for i in range(n) %}
-    (SELECT * FROM ( SELECT 0 AS generated_number ) t
+    (SELECT * FROM ( SELECT 0 AS gen_number ) t
         UNION ALL
-        SELECT * FROM ( SELECT 1 AS generated_number ) t) AS p{{i}}
+        SELECT * FROM ( SELECT 1 AS gen_number ) t) AS p{{i}}
     {% if not loop.last %} cross join {% endif %}
     {% endfor %}
 
 
-    WHERE gen_number <= {{upper_bound}}
+    WHERE generated_number <= {{upper_bound}}
 
 {% endmacro %}
