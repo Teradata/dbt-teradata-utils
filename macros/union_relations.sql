@@ -103,6 +103,6 @@
         {% endif -%}
 
     {%- endfor -%}
-    ) tmp
+    )
 
 {%- endmacro -%}
