@@ -56,10 +56,12 @@ projects:
             materialized="table"
           )
         }}
-        SELECT * FROM
-        {{ dbt_utils.union_relations(
-            relations=[ref('test_table1'), ref('test_table2')]
-        ) }}
+        with unioned as (
+          {{ dbt_utils.union_relations(
+              relations=[ref('test_table1'), ref('test_table2')]
+          ) }}
+        )
+        SELECT * FROM unioned
 
 sequences:
   test:
