@@ -14,6 +14,7 @@
 
 WITH validation AS (
   SELECT
+    {{select_gb_cols}}
     sum(CASE WHEN {{ column_name }} iS NULL THEN 0 ELSE 1 END) / cast(count(*) AS numeric(5,2)) AS not_null_proportion
   from {{ model }}
   {{groupby_gb_cols}}
