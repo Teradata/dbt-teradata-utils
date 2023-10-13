@@ -4,7 +4,7 @@
 {# implementatin removes the cast. It is the responsibility of the caller to make sure #}
 {# that provided field names are strings #}
 
-{%- macro teradata__surrogate_key(field_list) -%}
+{%- macro teradata__generate_surrogate_key(field_list) -%}
 
 {%- if varargs|length >= 1 or field_list is string %}
 

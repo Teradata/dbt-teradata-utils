@@ -52,7 +52,7 @@ projects:
             materialized="table"
           )
         }}
-        SELECT {{ dbt_utils.surrogate_key(['attrA', 'attrB']) }} AS surrogate_key FROM {{ ref('test_table1')}}
+        SELECT {{ dbt_utils.generate_surrogate_key(['attrA', 'attrB']) }} AS surrogate_key FROM {{ ref('test_table1')}}
         WHERE length(surrogate_key) = 32
 
 sequences:
