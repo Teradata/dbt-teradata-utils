@@ -47,7 +47,7 @@ projects:
         }}
         SELECT {{ dbt_utils.get_url_path(field='url') }} AS url_path
         FROM {{ ref('urls') }}
-        WHERE url_path = 'path1/path2/path3#pivot-source'
+        WHERE url_path = '/path1/path2/path3'
 
 
 sequences:
