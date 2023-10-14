@@ -1,0 +1,21 @@
+diff --git a/integration_tests/models/sql/test_get_single_value_default.sql b/integration_tests/models/sql/test_get_single_value_default.sql
+index 7b04902..1ea3694 100644
+--- a/integration_tests/models/sql/test_get_single_value_default.sql
++++ b/integration_tests/models/sql/test_get_single_value_default.sql
+@@ -4,13 +4,13 @@
+     I once thought as you are thinking. Proceed with caution.
+ #}
+ 
+-{% set false_statement = 'select 1 as id ' ~ limit_zero() %}
++{% set false_statement = 'SELECT x.id FROM (SELECT 1 AS id) AS x WHERE id <> 1' %}
+ 
+ with default_data as (
+ 
+     select
+-        cast({{ dbt.string_literal('2022-01-01') }} as {{ dbt.type_timestamp() }}) as date_expected,
+-        cast({{ dbt.string_literal(dbt_utils.get_single_value(false_statement, '2022-01-01')) }} as {{ dbt.type_timestamp() }}) as date_actual,
++        cast({{ dbt.string_literal('2022-01-01 00:00:00') }} as {{ dbt.type_timestamp() }}) as date_expected,
++        cast({{ dbt.string_literal(dbt_utils.get_single_value(false_statement, '2022-01-01 00:00:00')) }} as {{ dbt.type_timestamp() }}) as date_actual,
+ 
+         1.23456 as float_expected,
+         {{ dbt_utils.get_single_value(false_statement, 1.23456) }} as float_actual,

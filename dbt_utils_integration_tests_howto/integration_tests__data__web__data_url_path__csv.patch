@@ -1,0 +1,17 @@
+diff --git a/integration_tests/data/web/data_url_path.csv b/integration_tests/data/web/data_url_path.csv
+index e21d8dd..586f410 100644
+--- a/integration_tests/data/web/data_url_path.csv
++++ b/integration_tests/data/web/data_url_path.csv
+@@ -1,5 +1,7 @@
+ original_url,parsed_path
++,
++https://docs.getdbt.com/path1/path2/path3#pivot-source?utm_source=123,/path1/path2/path3
+ www.google.co.uk?utm_source=google&utm_medium=cpc&utm_campaign=spring-summer,
+-http://witanddelight.com/2018/01/tips-tricks-how-run-half-marathon-first-time/,2018/01/tips-tricks-how-run-half-marathon-first-time/
+-https://www.nytimes.com/2018/01/01/blog,2018/01/01/blog
+-http://witanddelight.com/2018/01/tips-tricks-how-run-half-marathon-first-time/?utm_source=google&utm_medium=cpc&utm_campaign=spring-summer,2018/01/tips-tricks-how-run-half-marathon-first-time/
+\ No newline at end of file
++http://witanddelight.com/2018/01/tips-tricks-how-run-half-marathon-first-time/,/2018/01/tips-tricks-how-run-half-marathon-first-time/
++https://www.nytimes.com/2018/01/01/blog,/2018/01/01/blog
++http://witanddelight.com/2018/01/tips-tricks-how-run-half-marathon-first-time/?utm_source=google&utm_medium=cpc&utm_campaign=spring-summer,/2018/01/tips-tricks-how-run-half-marathon-first-time/
+\ No newline at end of file

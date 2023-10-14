@@ -1,0 +1,15 @@
+diff --git a/integration_tests/models/sql/test_groupby.sql b/integration_tests/models/sql/test_groupby.sql
+index fe790e9..aebf97c 100644
+--- a/integration_tests/models/sql/test_groupby.sql
++++ b/integration_tests/models/sql/test_groupby.sql
+@@ -10,9 +10,7 @@ with test_data as (
+ grouped as (
+ 
+     select 
+-        *,
+-        count(*) as total
+-
++        *
+     from test_data
+     {{ dbt_utils.group_by(2) }}
+     

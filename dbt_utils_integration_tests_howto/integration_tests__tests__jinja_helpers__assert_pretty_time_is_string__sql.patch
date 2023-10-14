@@ -1,0 +1,17 @@
+diff --git a/integration_tests/tests/jinja_helpers/assert_pretty_time_is_string.sql b/integration_tests/tests/jinja_helpers/assert_pretty_time_is_string.sql
+index a6347ab..1702db0 100644
+--- a/integration_tests/tests/jinja_helpers/assert_pretty_time_is_string.sql
++++ b/integration_tests/tests/jinja_helpers/assert_pretty_time_is_string.sql
+@@ -1,6 +1,11 @@
+ {% if dbt_utils.pretty_time() is string %}
+     {# Return 0 rows for the test to pass #}
+-    select 1 as col_name {{ limit_zero() }}
++    select _x.col_name
++    from
++        (select 1 as col_name) as _x
++    join
++        (select 2 as col_name) as _y
++    on _x.col_name = _y.col_name
+ {% else %}
+     {# Return >0 rows for the test to fail #}
+     select 1

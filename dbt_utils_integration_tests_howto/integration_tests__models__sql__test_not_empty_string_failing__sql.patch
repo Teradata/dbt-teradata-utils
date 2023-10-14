@@ -1,0 +1,66 @@
+diff --git a/integration_tests/models/sql/test_not_empty_string_failing.sql b/integration_tests/models/sql/test_not_empty_string_failing.sql
+index 2870f9c..9284bb7 100644
+--- a/integration_tests/models/sql/test_not_empty_string_failing.sql
++++ b/integration_tests/models/sql/test_not_empty_string_failing.sql
+@@ -1,41 +1,25 @@
+ -- dbt seed casts '' as NULL, so we need to select empty strings to enable testing
++{{
++    config(materialized='table')
++}}
+ 
+ with blank_data as (
+-
+-    select
+-        1 as id,
+-        'not an empty string' as string_trim_whitespace_true
+-
+-    union all
+-
+-    select
+-        2 as id,
+-        'also not an empty string' as string_trim_whitespace_true
+-
+-    union all
+-
+-    select
+-        3 as id,
+-        'string with trailing whitespace  ' as string_trim_whitespace_true
+-
+-    union all
+-
+-    select
+-        4 as id,
+-        '   ' as string_trim_whitespace_true
+-
+-    union all
+-
+-    select
+-        5 as id,
+-        '' as string_trim_whitespace_true
+-
+-    union all
+-
+-    select
+-        6 as id,
+-        null as string_trim_whitespace_true
+-
++    SELECT id,
++        CASE WHEN id = 1 THEN 'not an empty string'
++             WHEN id = 2 THEN 'also not an empty string'
++             WHEN id = 3 THEN 'string with trailing whitespace  '
++             WHEN id = 4 THEN '   '
++             WHEN id = 5 THEN ''
++             WHEN id = 6 THEN NULL
++        ELSE NULL
++        END AS string_trim_whitespace_true
++    FROM
++    (SELECT CALENDAR_DATE AS _day_
++         , (ROW_NUMBER()
++           OVER (ORDER BY CALENDAR_DATE)) AS id
++         FROM SYS_CALENDAR.CALENDAR
++         WHERE CALENDAR_DATE BETWEEN DATE - 10 AND DATE) y
++    WHERE id <= 6
+ )
+ 
+ select * from blank_data
+\ No newline at end of file

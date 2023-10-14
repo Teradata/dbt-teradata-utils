@@ -1,0 +1,15 @@
+diff --git a/integration_tests/tests/assert_get_query_results_as_dict_objects_equal.sql b/integration_tests/tests/assert_get_query_results_as_dict_objects_equal.sql
+index 55d5400..c9063d2 100644
+--- a/integration_tests/tests/assert_get_query_results_as_dict_objects_equal.sql
++++ b/integration_tests/tests/assert_get_query_results_as_dict_objects_equal.sql
+@@ -77,5 +77,9 @@ Instead, we'll manually check that the values of these dictionaries are equivale
+ {% endif %}
+ 
+ {{ log(ns.err_msg, info=True) }}
+-select 1 as col_name {% if ns.pass %} {{ limit_zero() }} {% endif %}
++  {% if ns.pass %}
++    select id from (select 1 as id) as x where id <> 1
++  {% else %}
++    select 1 as col_name
++  {% endif %}
+ {% endif %}

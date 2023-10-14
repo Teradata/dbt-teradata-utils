@@ -1,0 +1,38 @@
+diff --git a/integration_tests/dbt_project.yml b/integration_tests/dbt_project.yml
+index a9531e7..49cc905 100644
+--- a/integration_tests/dbt_project.yml
++++ b/integration_tests/dbt_project.yml
+@@ -22,7 +22,7 @@ clean-targets:         # directories to be removed by `dbt clean`
+ 
+ dispatch:
+   - macro_namespace: 'dbt_utils'
+-    search_order: ['dbt_utils_integration_tests', 'dbt_utils']
++    search_order: ['teradata_utils', 'dbt_utils_integration_tests', 'dbt_utils']
+ 
+ seeds:
+ 
+@@ -49,6 +49,24 @@ seeds:
+           min_value: float
+           max_value: float
+ 
++      data_generate_surrogate_key:
++        +column_types:
++          column_1: varchar(100)
++          column_2: varchar(100)
++          column_3: varchar(100)
++          expected_column_1_only: varchar(100)
++          expected_all_columns: varchar(100)
++    web:
++      data_url_host:
++        +column_types:
++          original_url: varchar(1000)
++          parsed_url: varchar(1000)
++
++      data_url_path:
++        +column_types:
++          original_url: varchar(1000)
++          parsed_path: varchar(1000)
++
+     schema_tests:
+       data_test_sequential_timestamps:
+         +column_types:

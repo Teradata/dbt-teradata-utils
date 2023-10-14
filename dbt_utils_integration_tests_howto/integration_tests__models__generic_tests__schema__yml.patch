@@ -1,0 +1,38 @@
+diff --git a/integration_tests/models/generic_tests/schema.yml b/integration_tests/models/generic_tests/schema.yml
+index fa0e744..5263705 100644
+--- a/integration_tests/models/generic_tests/schema.yml
++++ b/integration_tests/models/generic_tests/schema.yml
+@@ -72,13 +72,13 @@ seeds:
+     tests:
+       - dbt_utils.mutually_exclusive_ranges:
+           lower_bound_column: valid_from
+-          upper_bound_column: coalesce(valid_to, '2099-01-01')
++          upper_bound_column: coalesce(valid_to, TO_DATE('2099-01-01'))
+           partition_by: subscription_id
+           gaps: allowed
+ 
+       - dbt_utils.mutually_exclusive_ranges:
+           lower_bound_column: valid_from
+-          upper_bound_column: coalesce(valid_to, '2099-01-01')
++          upper_bound_column: coalesce(valid_to, TO_DATE('2099-01-01'))
+           partition_by: subscription_id
+           gaps: required
+ 
+@@ -94,7 +94,7 @@ seeds:
+     tests:
+       - dbt_utils.unique_combination_of_columns:
+           combination_of_columns:
+-            - month
++            - _month_
+             - product
+ 
+   - name: data_cardinality_equality_a
+@@ -165,7 +165,7 @@ models:
+       - dbt_utils.recency:
+           datepart: day
+           field: created_at
+-          interval: 1
++          interval: 7
+           ignore_time_component: true
+       - dbt_utils.recency:
+           datepart: day

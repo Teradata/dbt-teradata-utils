@@ -1,0 +1,12 @@
+diff --git a/integration_tests/macros/tests.sql b/integration_tests/macros/tests.sql
+index 046fab3..696a997 100644
+--- a/integration_tests/macros/tests.sql
++++ b/integration_tests/macros/tests.sql
+@@ -1,6 +1,6 @@
+ 
+ {% test assert_equal(model, actual, expected) %}
+-select * from {{ model }} where {{ actual }} != {{ expected }}
++select * from {{ model }} where {{ actual }} <> {{ expected }}
+ 
+ {% endtest %}
+ 

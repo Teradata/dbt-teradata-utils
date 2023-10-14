@@ -1,0 +1,53 @@
+diff --git a/integration_tests/tests/sql/test_get_single_value_multiple_rows.sql b/integration_tests/tests/sql/test_get_single_value_multiple_rows.sql
+index fc4c927..ed172d3 100644
+--- a/integration_tests/tests/sql/test_get_single_value_multiple_rows.sql
++++ b/integration_tests/tests/sql/test_get_single_value_multiple_rows.sql
+@@ -1,18 +1,36 @@
+ {% set query %}
+-with input as (
+-    select 1 as id, 4 as di 
+-    union all 
+-    select 2 as id, 5 as di
+-    union all 
+-    select 3 as id, 6 as di
++with _input as (
++    SELECT x.id,
++        CASE WHEN x.id = 1 THEN 4
++             WHEN x.id = 2 THEN 5
++             WHEN x.id = 3 THEN 6
++        END AS di
++    FROM
++    (SELECT CALENDAR_DATE AS _day_
++         , (ROW_NUMBER()
++           OVER (ORDER BY CALENDAR_DATE)) AS id
++    FROM SYS_CALENDAR.CALENDAR
++    WHERE CALENDAR_DATE BETWEEN DATE - 2 AND DATE) AS x
+ )
+ {% endset %}
+ 
+ with comparisons as (
+-    select {{ dbt_utils.get_single_value(query ~ " select min(id) from input") }} as output, 1 as expected
+-    union all
+-    select {{ dbt_utils.get_single_value(query ~ " select max(di) from input") }} as output, 6 as expected
++    SELECT
++        CASE WHEN y.id = 1 THEN {{ dbt_utils.get_single_value(query ~ " select min(id) from _input") }}
++             WHEN y.id = 2 THEN {{ dbt_utils.get_single_value(query ~ " select max(di) from _input") }}
++	    END AS output,
++	    CASE WHEN y.id = 1 THEN 1
++	         WHEN y.id = 2 THEN 6
++	    END AS expected
++
++	FROM
++	    (SELECT CALENDAR_DATE AS _day_
++         , (ROW_NUMBER()
++           OVER (ORDER BY CALENDAR_DATE)) AS id
++         FROM SYS_CALENDAR.CALENDAR
++         WHERE CALENDAR_DATE BETWEEN DATE - 1 AND DATE) y
+ )
++
+ select * 
+ from comparisons
+-where output != expected
+\ No newline at end of file
++where output <> expected
+\ No newline at end of file

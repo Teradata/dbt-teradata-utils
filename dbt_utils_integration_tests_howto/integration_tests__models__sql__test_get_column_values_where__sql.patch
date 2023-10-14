@@ -1,0 +1,28 @@
+diff --git a/integration_tests/models/sql/test_get_column_values_where.sql b/integration_tests/models/sql/test_get_column_values_where.sql
+index 5eab9c9..98339aa 100644
+--- a/integration_tests/models/sql/test_get_column_values_where.sql
++++ b/integration_tests/models/sql/test_get_column_values_where.sql
+@@ -1,6 +1,19 @@
++{{
++    config(materialized='table')
++}}
++
+ {% set column_values = dbt_utils.get_column_values(ref('data_get_column_values_where'), 'field', where="condition = 'left'") %}
+ 
+ -- Create a relation using the values
++SELECT TOP {{ column_values | length }}
++CASE
+ {% for val in column_values -%}
+-select {{ string_literal(val) }} as field {% if not loop.last %}union all{% endif %} 
+-{% endfor %}
+\ No newline at end of file
++WHEN id = {{ loop.index }} THEN {{ string_literal(val) }}
++{% endfor %}
++END AS field
++FROM (SELECT CALENDAR_DATE AS _day_
++         , (ROW_NUMBER()
++           OVER (ORDER BY CALENDAR_DATE)) AS id
++         FROM SYS_CALENDAR.CALENDAR
++         WHERE CALENDAR_DATE BETWEEN DATE - 100 AND DATE) y
++ORDER BY id
+\ No newline at end of file

@@ -1,0 +1,60 @@
+diff --git a/integration_tests/models/sql/test_not_empty_string_passing.sql b/integration_tests/models/sql/test_not_empty_string_passing.sql
+index 6578041..4edacb2 100644
+--- a/integration_tests/models/sql/test_not_empty_string_passing.sql
++++ b/integration_tests/models/sql/test_not_empty_string_passing.sql
+@@ -1,32 +1,29 @@
+ -- dbt seed casts '' as NULL, so we need to select empty strings to enable testing
++{{
++    config(materialized='table')
++}}
+ 
+ with blank_data as (
+-
+-    select
+-        1 as id,
+-        'not an empty string' as string_trim_whitespace_true,
+-        'not an empty string' as string_trim_whitespace_false
+-
+-    union all
+-
+-    select
+-        2 as id,
+-        'also not an empty string' as string_trim_whitespace_true,
+-        'also not an empty string' as string_trim_whitespace_false
+-
+-    union all
+-
+-    select
+-        3 as id,
+-        'string with trailing whitespace  ' as string_trim_whitespace_true,
+-        '   ' as string_trim_whitespace_false  -- This will cause a failure when trim_whitespace = true
+-
+-    union all
+-
+-    select
+-        6 as id,
+-        null as string_trim_whitespace_true,
+-        null as string_trim_whitespace_false
++    SELECT id,
++        CASE WHEN id = 1 THEN 'not an empty string'
++             WHEN id = 2 THEN 'also not an empty string'
++             WHEN id = 3 THEN 'string with trailing whitespace  '
++             WHEN id = 6 THEN NULL
++        ELSE NULL
++        END AS string_trim_whitespace_true,
++        CASE WHEN id = 1 THEN 'not an empty string'
++             WHEN id = 2 THEN 'also not an empty string'
++             WHEN id = 3 THEN '   ' -- This will cause a failure on Teradata then trim_whitespace = false since multiple blanks are considered empty string
++             WHEN id = 6 THEN NULL -- This will cause a failure when trim_whitespace = true
++        ELSE NULL
++        END AS string_trim_whitespace_false
++    FROM
++    (SELECT CALENDAR_DATE AS _day_
++         , (ROW_NUMBER()
++           OVER (ORDER BY CALENDAR_DATE)) AS id
++         FROM SYS_CALENDAR.CALENDAR
++         WHERE CALENDAR_DATE BETWEEN DATE - 10 AND DATE) y
++    WHERE id IN (1,2,3,6)
+ 
+ )
+ 

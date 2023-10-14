@@ -1,0 +1,17 @@
+diff --git a/integration_tests/data/sql/data_unpivot_bool_expected.csv b/integration_tests/data/sql/data_unpivot_bool_expected.csv
+index 4e688a6..fcc8b79 100644
+--- a/integration_tests/data/sql/data_unpivot_bool_expected.csv
++++ b/integration_tests/data/sql/data_unpivot_bool_expected.csv
+@@ -1,10 +1,10 @@
+ customer_id,created_at,prop,val
+ 123,2017-01-01,segment,tier 1
+ 123,2017-01-01,status,active
+-123,2017-01-01,is_updated,true
++123,2017-01-01,is_updated,1
+ 234,2017-02-01,segment,tier 3
+ 234,2017-02-01,status,active
+-234,2017-02-01,is_updated,false
++234,2017-02-01,is_updated,0
+ 567,2017-03-01,status,churned
+ 567,2017-03-01,is_updated,
+ 567,2017-03-01,segment,tier 2
