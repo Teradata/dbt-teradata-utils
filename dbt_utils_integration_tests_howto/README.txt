@@ -4,8 +4,8 @@ The patches in the folder are necessary for running the tests against dbt-utils 
 
 Prerequisites for running the tests:
 
-1. Teradata instance with grants configured for the test executing user GLOBAL_FUNCTIONS.hash_md5
-2. dbt configured with dbt-teradata as in listing in an python venv
+1. Teradata instance with grants configured for GLOBAL_FUNCTIONS.hash_md5 for the tests executing user
+2. dbt configured with dbt-teradata (see listing)
 -------------------------------------------------
 $ dbt -v
 Core:
@@ -23,7 +23,7 @@ Plugins:
   You can find instructions for upgrading here:
   https://docs.getdbt.com/docs/installation
 -----------------------------------------------------------------
-3. proper entries in ~/.dbt/profiles.yml for the Teradata instance as in listing
+3. proper entries in ~/.dbt/profiles.yml for the Teradata instance (see listing)
 ----------------------------------------------------------------
 config:
     send_anonymous_usage_stats: False
@@ -47,8 +47,8 @@ integration_tests:
 -------------------------------------------------------------------------------
 
 Running the tests:
-$DBT_TB_UTILS points to the dbt-teradata-utils repository on the local machine - the repository under test
-$DBT_UTILS points to the https://github.com/dbt-labs/dbt-utils repository from the local machine
+$DBT_TB_UTILS refers to the dbt-teradata-utils repository on the local machine - the repository under test
+$DBT_UTILS refers to the https://github.com/dbt-labs/dbt-utils repository from the local machine
 
 1. Download the dbt-utils repo:
    git clone https://github.com/dbt-labs/dbt-utils.git $DBT_UTILS
@@ -59,7 +59,7 @@ $DBT_UTILS points to the https://github.com/dbt-labs/dbt-utils repository from t
    cd $DBT_UTILS/integration_tests
    git apply $DBT_TB_UTILS/dbt_utils_integration_tests_howto/*patch
    !!!OBS The patches must successfully apply
-4. Update $DBT_UTILS/integration_tests/packages.yml with the actual value of $DBT_TD_UTILS (see listing below)
+4. Update $DBT_UTILS/integration_tests/packages.yml with the actual value of $DBT_TD_UTILS (see listing)
    cd $DBT_UTILS/integration_tests
 -----------------------------------------------------------------------------------------
 $ cat packages.yml
