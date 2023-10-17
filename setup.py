@@ -17,7 +17,7 @@ with open(os.path.join(this_directory, 'README.md')) as f:
 
 
 package_name = "dbt-teradata-utils"
-package_version = "0.0.2a"
+package_version = "0.0.1a"
 description = """The Teradata utils for dbt (data build tool)"""
 
 
