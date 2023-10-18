@@ -1,25 +1,14 @@
 diff --git a/integration_tests/tests/jinja_helpers/test_slugify.sql b/integration_tests/tests/jinja_helpers/test_slugify.sql
-index 7d07ec4..a95c324 100644
+index 7d07ec4..3dcc335 100644
 --- a/integration_tests/tests/jinja_helpers/test_slugify.sql
 +++ b/integration_tests/tests/jinja_helpers/test_slugify.sql
-@@ -1,9 +1,19 @@
+@@ -1,9 +1,11 @@
  with comparisons as (
--  select '{{ dbt_utils.slugify("!Hell0 world-hi") }}' as output, 'hell0_world_hi' as expected
--  union all
--  select '{{ dbt_utils.slugify("0Hell0 world-hi") }}' as output, '_0hell0_world_hi' as expected
-+    SELECT
-+        CASE WHEN x.id = 1 THEN '{{ dbt_utils.slugify("!Hell0 world-hi") }}'
-+             WHEN x.id = 2 THEN '{{ dbt_utils.slugify("0Hell0 world-hi") }}'
-+        END AS output,
-+        CASE WHEN x.id = 1 THEN 'hell0_world_hi'
-+             WHEN x.id = 2 THEN '_0hell0_world_hi'
-+        END AS expected
-+    FROM
-+    (SELECT CALENDAR_DATE AS _day_
-+         , (ROW_NUMBER()
-+           OVER (ORDER BY CALENDAR_DATE)) AS id
-+    FROM SYS_CALENDAR.CALENDAR
-+    WHERE CALENDAR_DATE BETWEEN DATE - 1 AND DATE) AS x
+   select '{{ dbt_utils.slugify("!Hell0 world-hi") }}' as output, 'hell0_world_hi' as expected
++  from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+   union all
+   select '{{ dbt_utils.slugify("0Hell0 world-hi") }}' as output, '_0hell0_world_hi' as expected
++  from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
  )
  
  select * 

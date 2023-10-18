@@ -1,38 +1,23 @@
 diff --git a/integration_tests/models/sql/test_star_quote_identifiers.sql b/integration_tests/models/sql/test_star_quote_identifiers.sql
-index 180d5bc..fe65e68 100644
+index 180d5bc..0aa9c62 100644
 --- a/integration_tests/models/sql/test_star_quote_identifiers.sql
 +++ b/integration_tests/models/sql/test_star_quote_identifiers.sql
-@@ -1,9 +1,24 @@
--select
--    {{ dbt.string_literal(adapter.quote("column_one")) | lower }} as expected,
--    {{ dbt.string_literal(dbt_utils.star(from=ref('data_star_quote_identifiers'), quote_identifiers=True)) | trim | lower }} as actual
+@@ -1,9 +1,15 @@
 +{{
 +    config(materialized='table')
 +}}
++
+ select
+     {{ dbt.string_literal(adapter.quote("column_one")) | lower }} as expected,
+     {{ dbt.string_literal(dbt_utils.star(from=ref('data_star_quote_identifiers'), quote_identifiers=True)) | trim | lower }} as actual
++    from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
  
--union all
--
--select
--    {{ dbt.string_literal("column_one") | lower }} as expected,
+ union all
+ 
+ select
+     {{ dbt.string_literal("column_one") | lower }} as expected,
 -    {{ dbt.string_literal(dbt_utils.star(from=ref('data_star_quote_identifiers'), quote_identifiers=False)) | trim | lower }} as actual
 \ No newline at end of file
-+SELECT
-+    CASE WHEN id = 1 THEN
-+            {{ dbt.string_literal(adapter.quote("column_one")) | lower }}
-+         WHEN id = 2 THEN
-+            {{ dbt.string_literal("column_one") | lower }}
-+         ELSE NULL
-+    END AS expected,
-+    CASE WHEN id = 1 THEN
-+            {{ dbt.string_literal(dbt_utils.star(from=ref('data_star_quote_identifiers'), quote_identifiers=True)) | trim | lower }}
-+         WHEN id = 2 THEN
-+            {{ dbt.string_literal(dbt_utils.star(from=ref('data_star_quote_identifiers'), quote_identifiers=False)) | trim | lower }}
-+         ELSE NULL
-+    END AS actual
-+FROM
-+    (SELECT CALENDAR_DATE AS _day_
-+         , (ROW_NUMBER()
-+           OVER (ORDER BY CALENDAR_DATE)) AS id
-+         FROM SYS_CALENDAR.CALENDAR
-+         WHERE CALENDAR_DATE BETWEEN DATE - 1 AND DATE) y
-+WHERE id <=2
++    {{ dbt.string_literal(dbt_utils.star(from=ref('data_star_quote_identifiers'), quote_identifiers=False)) | trim | lower }} as actual
++    from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+\ No newline at end of file
