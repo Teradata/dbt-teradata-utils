@@ -23,7 +23,7 @@ projects:
       packages.yml: |
         packages:
         - package: dbt-labs/dbt_utils
-          version: 0.8.0
+          version: 1.1.1
         - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
 
       models/schema.yml: |
@@ -61,7 +61,7 @@ projects:
       packages.yml: |
         packages:
         - package: dbt-labs/dbt_utils
-          version: 0.8.0
+          version: 1.1.1
         - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
 
       models/schema.yml: |
@@ -99,7 +99,7 @@ projects:
       packages.yml: |
         packages:
         - package: dbt-labs/dbt_utils
-          version: 0.8.0
+          version: 1.1.1
         - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
 
       models/schema.yml: |
@@ -139,7 +139,7 @@ projects:
       packages.yml: |
         packages:
         - package: dbt-labs/dbt_utils
-          version: 0.8.0
+          version: 1.1.1
         - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
 
       models/schema.yml: |

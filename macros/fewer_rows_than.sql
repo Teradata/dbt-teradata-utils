@@ -1,44 +1,79 @@
 {# Overriding because the original implementation used 'SELECT *,..'. Teradata allows '*' with other columns in a select statement #}
 {# only when '*' is qualified with a table/view name #}
 
-{% macro teradata__test_fewer_rows_than(model, compare_model) %}
+{% macro teradata__test_fewer_rows_than(model, compare_model, group_by_columns = []) %}
 
-{{ config(fail_calc = 'coalesce(row_count_delta, 0)') }}
+{{ config(fail_calc = 'sum(coalesce(row_count_delta, 0))') }}
 
-WITH a AS (
+{% if group_by_columns|length() > 0 %}
+  {% set select_gb_cols = group_by_columns|join(' ,') + ', ' %}
+  {% set join_gb_cols %}
+    {% for c in group_by_columns %}
+      and a.{{c}} = b.{{c}}
+    {% endfor %}
+  {% endset %}
+  {% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
+{% endif %}
 
-    SELECT count(*) AS count_our_model FROM {{ model }}
+{#-- We must add a fake join key in case additional grouping variables are not provided --#}
+{#-- Redshift does not allow for dynamically created join conditions (e.g. full join on 1 = 1 --#}
+{#-- The same logic is used in equal_rowcount. In case of changes, maintain consistent logic --#}
+{% set group_by_columns = ['id_dbtutils_test_fewer_rows_than'] + group_by_columns %}
+{% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
+
+
+with a as (
+
+    select
+      {{select_gb_cols}}
+      1 as id_dbtutils_test_fewer_rows_than,
+      count(*) as count_our_model
+    from {{ model }}
+    {{ groupby_gb_cols }}
 
 ),
-b AS (
+b as (
 
-    SELECT count(*) AS count_comparison_model FROM {{ compare_model }}
+    select
+      {{select_gb_cols}}
+      1 as id_dbtutils_test_fewer_rows_than,
+      count(*) as count_comparison_model
+    from {{ compare_model }}
+    {{ groupby_gb_cols }}
 
 ),
-counts AS (
+counts as (
 
-    SELECT
+    select
+
+        {% for c in group_by_columns -%}
+          a.{{c}} as {{c}}_a,
+          b.{{c}} as {{c}}_b,
+        {% endfor %}
+
         count_our_model,
         count_comparison_model
-    FROM a
-    CROSS JOIN b
+    from a
+    full join b on
+    a.id_dbtutils_test_fewer_rows_than = b.id_dbtutils_test_fewer_rows_than
+    {{ join_gb_cols }}
 
 ),
-final AS (
+final as (
 
-    SELECT counts.*,
-        CASE
+    select counts.*,
+        case
             -- fail the test if we have more rows than the reference model and return the row count delta
-            WHEN count_our_model > count_comparison_model THEN (count_our_model - count_comparison_model)
+            when count_our_model > count_comparison_model then (count_our_model - count_comparison_model)
             -- fail the test if they are the same number
-            WHEN count_our_model = count_comparison_model THEN 1
+            when count_our_model = count_comparison_model then 1
             -- pass the test if the delta is positive (i.e. return the number 0)
-            ELSE 0
-    END AS row_count_delta
-    FROM counts
+            else 0
+    end as row_count_delta
+    from counts
 
 )
 
-SELECT * FROM final
+select * from final
 
 {% endmacro %}

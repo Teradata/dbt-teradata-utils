@@ -23,7 +23,7 @@ projects:
       packages.yml: |
         packages:
         - package: dbt-labs/dbt_utils
-          version: 0.8.0
+          version: 1.1.1
         - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
 
       seeds/test_table1.csv: |
@@ -56,10 +56,12 @@ projects:
             materialized="table"
           )
         }}
-        SELECT * FROM
-        {{ dbt_utils.union_relations(
-            relations=[ref('test_table1'), ref('test_table2')]
-        ) }}
+        with unioned as (
+          {{ dbt_utils.union_relations(
+              relations=[ref('test_table1'), ref('test_table2')]
+          ) }}
+        )
+        SELECT * FROM unioned
 
 sequences:
   test:

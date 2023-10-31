@@ -1,0 +1,18 @@
+diff --git a/integration_tests/models/sql/test_get_column_values_where.sql b/integration_tests/models/sql/test_get_column_values_where.sql
+index 5eab9c9..bc0f351 100644
+--- a/integration_tests/models/sql/test_get_column_values_where.sql
++++ b/integration_tests/models/sql/test_get_column_values_where.sql
+@@ -1,6 +1,11 @@
++{{
++    config(materialized='table')
++}}
++
+ {% set column_values = dbt_utils.get_column_values(ref('data_get_column_values_where'), 'field', where="condition = 'left'") %}
+ 
+ -- Create a relation using the values
+ {% for val in column_values -%}
+-select {{ string_literal(val) }} as field {% if not loop.last %}union all{% endif %} 
++select {{ string_literal(val) }} as field from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
++{% if not loop.last %}union all{% endif %}
+ {% endfor %}
+\ No newline at end of file

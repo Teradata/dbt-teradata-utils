@@ -1,0 +1,14 @@
+diff --git a/integration_tests/data/schema_tests/data_test_sequential_timestamps.csv b/integration_tests/data/schema_tests/data_test_sequential_timestamps.csv
+index e15c83c..583aa48 100644
+--- a/integration_tests/data/schema_tests/data_test_sequential_timestamps.csv
++++ b/integration_tests/data/schema_tests/data_test_sequential_timestamps.csv
+@@ -1,5 +1,5 @@
+ my_timestamp
+-2021-01-01 00:00
+-2021-01-01 01:00
+-2021-01-01 02:00
+-2021-01-01 03:00
++2021-01-01 00:00:00
++2021-01-01 01:00:00
++2021-01-01 02:00:00
++2021-01-01 03:00:00

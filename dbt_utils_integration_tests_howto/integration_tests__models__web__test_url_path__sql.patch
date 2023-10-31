@@ -1,0 +1,11 @@
+diff --git a/integration_tests/models/web/test_url_path.sql b/integration_tests/models/web/test_url_path.sql
+index c03e554..87cb803 100644
+--- a/integration_tests/models/web/test_url_path.sql
++++ b/integration_tests/models/web/test_url_path.sql
+@@ -1,3 +1,6 @@
++{{
++    config(materialized='table')
++}}
+ with data as (
+     
+     select * from {{ref('data_url_path')}}

@@ -1,0 +1,23 @@
+diff --git a/integration_tests/models/sql/test_star_quote_identifiers.sql b/integration_tests/models/sql/test_star_quote_identifiers.sql
+index 180d5bc..0aa9c62 100644
+--- a/integration_tests/models/sql/test_star_quote_identifiers.sql
++++ b/integration_tests/models/sql/test_star_quote_identifiers.sql
+@@ -1,9 +1,15 @@
++{{
++    config(materialized='table')
++}}
++
+ select
+     {{ dbt.string_literal(adapter.quote("column_one")) | lower }} as expected,
+     {{ dbt.string_literal(dbt_utils.star(from=ref('data_star_quote_identifiers'), quote_identifiers=True)) | trim | lower }} as actual
++    from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ 
+ union all
+ 
+ select
+     {{ dbt.string_literal("column_one") | lower }} as expected,
+-    {{ dbt.string_literal(dbt_utils.star(from=ref('data_star_quote_identifiers'), quote_identifiers=False)) | trim | lower }} as actual
+\ No newline at end of file
++    {{ dbt.string_literal(dbt_utils.star(from=ref('data_star_quote_identifiers'), quote_identifiers=False)) | trim | lower }} as actual
++    from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+\ No newline at end of file

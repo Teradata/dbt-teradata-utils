@@ -1,0 +1,10 @@
+diff --git a/integration_tests/data/schema_tests/data_unique_combination_of_columns.csv b/integration_tests/data/schema_tests/data_unique_combination_of_columns.csv
+index 09d64b5..0a5f9aa 100644
+--- a/integration_tests/data/schema_tests/data_unique_combination_of_columns.csv
++++ b/integration_tests/data/schema_tests/data_unique_combination_of_columns.csv
+@@ -1,4 +1,4 @@
+-month,product,revenue
++_month_,product,revenue
+ 2019-01-01,jaffle,500
+ 2019-01-01,lamington,100
+ 2019-01-01,pavlova,600

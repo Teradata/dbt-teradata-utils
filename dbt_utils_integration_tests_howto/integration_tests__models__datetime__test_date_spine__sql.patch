@@ -1,0 +1,31 @@
+diff --git a/integration_tests/models/datetime/test_date_spine.sql b/integration_tests/models/datetime/test_date_spine.sql
+index fa4ae52..144c637 100644
+--- a/integration_tests/models/datetime/test_date_spine.sql
++++ b/integration_tests/models/datetime/test_date_spine.sql
+@@ -6,21 +6,17 @@
+ 
+ {{ config(materialized='table') }}
+ 
+-with date_spine as (
+-
++select x.date_day
++from (
+     {% if target.type == 'postgres' %}
+         {{ dbt_utils.date_spine("day", "'2018-01-01'::date", "'2018-01-10'::date") }}
+-        
++
+     {% elif target.type == 'bigquery' %}
+         select cast(date_day as date) as date_day
+         from ({{ dbt_utils.date_spine("day", "'2018-01-01'", "'2018-01-10'") }})
+-    
++
+     {% else %}
+         {{ dbt_utils.date_spine("day", "'2018-01-01'", "'2018-01-10'") }}
+     {% endif %}
+-
+-)
+-
+-select date_day
+-from date_spine
++) x
+ 

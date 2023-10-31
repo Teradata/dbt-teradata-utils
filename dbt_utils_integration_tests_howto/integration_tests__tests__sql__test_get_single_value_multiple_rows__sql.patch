@@ -1,0 +1,38 @@
+diff --git a/integration_tests/tests/sql/test_get_single_value_multiple_rows.sql b/integration_tests/tests/sql/test_get_single_value_multiple_rows.sql
+index fc4c927..58f2a29 100644
+--- a/integration_tests/tests/sql/test_get_single_value_multiple_rows.sql
++++ b/integration_tests/tests/sql/test_get_single_value_multiple_rows.sql
+@@ -1,18 +1,24 @@
+ {% set query %}
+-with input as (
+-    select 1 as id, 4 as di 
+-    union all 
++with _input as (
++    select 1 as id, 4 as di
++    from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
++    union all
+     select 2 as id, 5 as di
+-    union all 
++    from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
++    union all
+     select 3 as id, 6 as di
++    from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ )
+ {% endset %}
+ 
+ with comparisons as (
+-    select {{ dbt_utils.get_single_value(query ~ " select min(id) from input") }} as output, 1 as expected
++    select {{ dbt_utils.get_single_value(query ~ " select min(id) from _input") }} as output, 1 as expected
++    from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+     union all
+-    select {{ dbt_utils.get_single_value(query ~ " select max(di) from input") }} as output, 6 as expected
++    select {{ dbt_utils.get_single_value(query ~ " select max(di) from _input") }} as output, 6 as expected
++    from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ )
++
+ select * 
+ from comparisons
+-where output != expected
+\ No newline at end of file
++where output <> expected
+\ No newline at end of file

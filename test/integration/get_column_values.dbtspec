@@ -23,7 +23,7 @@ projects:
       packages.yml: |
         packages:
         - package: dbt-labs/dbt_utils
-          version: 0.8.0
+          version: 1.1.1
         - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
 
       seeds/test_table1.csv: |
@@ -48,6 +48,20 @@ projects:
         {%- endfor -%}
         )
 
+      models/test_table3.sql: |
+        {{
+          config(
+            materialized="table"
+          )
+        }}
+        {% set colors = dbt_utils.get_column_values(table=ref('test_table1'), column='color', where="color IN ('orange', 'black')") %}
+
+        SELECT * FROM {{ref('test_table1')}} WHERE color IN (
+        {%- for color in colors -%}
+            '{{ color }}'{{ ", " if not loop.last else "" }}
+        {%- endfor -%}
+        )
+
 sequences:
   test:
     project: project_for_test
@@ -62,6 +76,10 @@ sequences:
         exists: True
         names:
           - test_table2
+          - test_table3
       - type: relation_rows
         name: test_table2
         length: 5
+      - type: relation_rows
+        name: test_table3
+        length: 2

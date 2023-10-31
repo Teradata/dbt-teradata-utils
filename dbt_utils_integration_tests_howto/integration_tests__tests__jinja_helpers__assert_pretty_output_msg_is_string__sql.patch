@@ -1,0 +1,17 @@
+diff --git a/integration_tests/tests/jinja_helpers/assert_pretty_output_msg_is_string.sql b/integration_tests/tests/jinja_helpers/assert_pretty_output_msg_is_string.sql
+index fea3359..ec9fc0d 100644
+--- a/integration_tests/tests/jinja_helpers/assert_pretty_output_msg_is_string.sql
++++ b/integration_tests/tests/jinja_helpers/assert_pretty_output_msg_is_string.sql
+@@ -1,6 +1,11 @@
+ {% if dbt_utils.pretty_log_format() is string %}
+     {# Return 0 rows for the test to pass #}
+-    select 1 as col_name {{ limit_zero() }}
++    select _x.col_name
++    from
++        (select 1 as col_name) as _x
++    join
++        (select 2 as col_name) as _y
++    on _x.col_name = _y.col_name
+ {% else %}
+     {# Return >0 rows for the test to fail #}
+     select 1

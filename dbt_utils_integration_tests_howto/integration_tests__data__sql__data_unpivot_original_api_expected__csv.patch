@@ -1,0 +1,10 @@
+diff --git a/integration_tests/data/sql/data_unpivot_original_api_expected.csv b/integration_tests/data/sql/data_unpivot_original_api_expected.csv
+index a2add2c..1cc189c 100644
+--- a/integration_tests/data/sql/data_unpivot_original_api_expected.csv
++++ b/integration_tests/data/sql/data_unpivot_original_api_expected.csv
+@@ -1,4 +1,4 @@
+-customer_id,created_at,field_name,value
++customer_id,created_at,field_name,_value_
+ 123,2017-01-01,status,active
+ 123,2017-01-01,segment,tier 1
+ 234,2017-02-01,status,active

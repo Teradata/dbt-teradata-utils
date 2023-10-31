@@ -1,0 +1,47 @@
+diff --git a/integration_tests/models/sql/test_not_empty_string_passing.sql b/integration_tests/models/sql/test_not_empty_string_passing.sql
+index 6578041..c51177b 100644
+--- a/integration_tests/models/sql/test_not_empty_string_passing.sql
++++ b/integration_tests/models/sql/test_not_empty_string_passing.sql
+@@ -1,4 +1,7 @@
+ -- dbt seed casts '' as NULL, so we need to select empty strings to enable testing
++{{
++    config(materialized='table')
++}}
+ 
+ with blank_data as (
+ 
+@@ -6,6 +9,7 @@ with blank_data as (
+         1 as id,
+         'not an empty string' as string_trim_whitespace_true,
+         'not an empty string' as string_trim_whitespace_false
++        from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ 
+     union all
+ 
+@@ -13,20 +17,23 @@ with blank_data as (
+         2 as id,
+         'also not an empty string' as string_trim_whitespace_true,
+         'also not an empty string' as string_trim_whitespace_false
++        from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ 
+     union all
+ 
+     select
+         3 as id,
+         'string with trailing whitespace  ' as string_trim_whitespace_true,
+-        '   ' as string_trim_whitespace_false  -- This will cause a failure when trim_whitespace = true
++        '   ' as string_trim_whitespace_false  -- This will cause a failure when trim_whitespace = true; -- This will cause a failure on Teradata then trim_whitespace = false since multiple blanks are considered empty string
++        from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ 
+     union all
+ 
+     select
+         6 as id,
+-        null as string_trim_whitespace_true,
+-        null as string_trim_whitespace_false
++        nullif('','') as string_trim_whitespace_true,
++        nullif('','') as string_trim_whitespace_false
++        from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ 
+ )
+ 

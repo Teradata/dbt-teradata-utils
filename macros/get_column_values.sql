@@ -1,13 +1,14 @@
 {# Overriding because the original implementation used 'value' which is a reserved Teradata keyword #}
+{# Overriding because the original implementation used 'limit' which is not supported by Teradata, using 'top' instead #}
 
-{% macro default__get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
-{% if default is none %}
-    {% set default = [] %}
-{% endif %}
+{% macro teradata__get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none, where=none) -%}
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
+        {% set default = [] if not default %}
         {{ return(default) }}
     {% endif %}
+
+    {%- do dbt_utils._is_ephemeral(table, 'get_column_values') -%}
 
     {# Not all relations are tables. Renaming for internal clarity without breaking functionality for anyone using named arguments #}
     {# TODO: Change the method signature in a future 0.x.0 release #}
@@ -31,16 +32,20 @@
         {%- else -%}
 
 
-            SELECT
-                {{ column }} AS _value
+            select
+                {% if max_records is not none %}
+                top {{ max_records }}
+                {% endif %}
+                {{ column }} as _value
 
-            FROM {{ target_relation }}
-            GROUP BY {{ column }}
-            ORDER BY {{ order_by }}
+            from {{ target_relation }}
 
-            {% if max_records is not none %}
-            LIMIT {{ max_records }}
+            {% if where is not none %}
+            where {{ where }}
             {% endif %}
+
+            group by {{ column }}
+            order by {{ order_by }}
 
         {% endif %}
 

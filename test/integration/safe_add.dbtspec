@@ -30,7 +30,7 @@ projects:
       packages.yml: |
         packages:
         - package: dbt-labs/dbt_utils
-          version: 0.8.0
+          version: 1.1.1
         - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
 
       seeds/test_table1.csv: |
@@ -52,7 +52,7 @@ projects:
             materialized="table"
           )
         }}
-        SELECT {{ dbt_utils.safe_add('number1', 'number2') }} AS sum_of_numbers, number1, number2 FROM {{ ref('test_table1')}}
+        SELECT {{ dbt_utils.safe_add(['number1', 'number2']) }} AS sum_of_numbers, number1, number2 FROM {{ ref('test_table1')}}
         WHERE sum_of_numbers = (number1 + number2)
 
 sequences:

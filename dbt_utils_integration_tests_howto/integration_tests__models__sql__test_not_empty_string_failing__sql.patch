@@ -1,0 +1,55 @@
+diff --git a/integration_tests/models/sql/test_not_empty_string_failing.sql b/integration_tests/models/sql/test_not_empty_string_failing.sql
+index 2870f9c..7b03f5a 100644
+--- a/integration_tests/models/sql/test_not_empty_string_failing.sql
++++ b/integration_tests/models/sql/test_not_empty_string_failing.sql
+@@ -1,40 +1,49 @@
+ -- dbt seed casts '' as NULL, so we need to select empty strings to enable testing
++{{
++    config(materialized='table')
++}}
+ 
+ with blank_data as (
+ 
+     select
+         1 as id,
+         'not an empty string' as string_trim_whitespace_true
++        from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ 
+     union all
+ 
+     select
+         2 as id,
+         'also not an empty string' as string_trim_whitespace_true
++        from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ 
+     union all
+ 
+     select
+         3 as id,
+         'string with trailing whitespace  ' as string_trim_whitespace_true
++        from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ 
+     union all
+ 
+     select
+         4 as id,
+         '   ' as string_trim_whitespace_true
++        from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ 
+     union all
+ 
+     select
+         5 as id,
+         '' as string_trim_whitespace_true
++        from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ 
+     union all
+ 
+     select
+         6 as id,
+-        null as string_trim_whitespace_true
++        nullif('','') as string_trim_whitespace_true
++        from SYS_CALENDAR.CALENDAR where day_of_calendar = 1
+ 
+ )
+ 

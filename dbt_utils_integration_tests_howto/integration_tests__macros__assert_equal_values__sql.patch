@@ -1,0 +1,14 @@
+diff --git a/integration_tests/macros/assert_equal_values.sql b/integration_tests/macros/assert_equal_values.sql
+index d4f0261..316d496 100644
+--- a/integration_tests/macros/assert_equal_values.sql
++++ b/integration_tests/macros/assert_equal_values.sql
+@@ -26,7 +26,7 @@
+ 
+ {% else %}
+ 
+-    select 'ok' {{ limit_zero() }}
++    select "SELECT 'ok' FROM (SELECT 1 AS id) AS x WHERE id <> 1"
+ 
+ {% endif %}
+ {% endmacro %}
+\ No newline at end of file

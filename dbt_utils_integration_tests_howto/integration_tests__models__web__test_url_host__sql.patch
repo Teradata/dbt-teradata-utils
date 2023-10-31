@@ -1,0 +1,21 @@
+diff --git a/integration_tests/models/web/test_url_host.sql b/integration_tests/models/web/test_url_host.sql
+index 06a9f69..4ad5da5 100644
+--- a/integration_tests/models/web/test_url_host.sql
++++ b/integration_tests/models/web/test_url_host.sql
+@@ -1,3 +1,6 @@
++{{
++    config(materialized='table')
++}}
+ with data as (
+     
+     select * from {{ref('data_url_host')}}
+@@ -6,7 +9,7 @@ with data as (
+ 
+ select
+ 
+-    {{ dbt_utils.get_url_host('original_url') }} as actual,
++    {{ dbt.safe_cast(dbt_utils.get_url_host('original_url'), 'varchar(8000)') }} as actual,
+     parsed_url as expected
+     
+ from data
+\ No newline at end of file

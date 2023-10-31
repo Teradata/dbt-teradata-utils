@@ -1,0 +1,38 @@
+diff --git a/integration_tests/tests/generic/expect_table_columns_to_match_set.sql b/integration_tests/tests/generic/expect_table_columns_to_match_set.sql
+index 5074ae0..bcecdf3 100644
+--- a/integration_tests/tests/generic/expect_table_columns_to_match_set.sql
++++ b/integration_tests/tests/generic/expect_table_columns_to_match_set.sql
+@@ -27,17 +27,29 @@
+ 
+     with relation_columns as (
+ 
++        select
++        case
+         {% for col_name in relation_column_names %}
+-        select cast('{{ col_name }}' as {{ type_string() }}) as relation_column
+-        {% if not loop.last %}union all{% endif %}
++        when id = {{ loop.index }} then cast('{{ col_name }}' as {{ dbt.type_string() }})
+         {% endfor %}
++        end as relation_column
++        from (
++            select day_of_calendar as id from SYS_CALENDAR.CALENDAR
++            where day_of_calendar between 1 and {{ relation_column_names | length  }}
++        ) ids
+     ),
+     input_columns as (
+ 
++        select
++        case
+         {% for col_name in column_list %}
+-        select cast('{{ col_name }}' as {{ type_string() }}) as input_column
+-        {% if not loop.last %}union all{% endif %}
++        when id = {{ loop.index }} then cast('{{ col_name }}' as {{ dbt.type_string() }})
+         {% endfor %}
++        end as input_column
++        from (
++            select day_of_calendar as id from SYS_CALENDAR.CALENDAR
++            where day_of_calendar between 1 and {{ column_list | length  }}
++        ) ids
+     )
+     select *
+     from

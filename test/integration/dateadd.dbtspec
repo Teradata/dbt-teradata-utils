@@ -31,7 +31,7 @@ projects:
       packages.yml: |
         packages:
         - package: dbt-labs/dbt_utils
-          version: 0.8.0
+          version: 1.1.1
         - local: "{{ env_var('DBT_TERADATA_UTILS_ROOT') }}"
 
       models/report.sql: |
@@ -40,7 +40,7 @@ projects:
             materialized="table"
           )
         }}
-        SELECT {{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }} AS _sum_of_dates
+        SELECT {{ dbt.dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }} AS _sum_of_dates
         WHERE _sum_of_dates = '2017-01-02'
 
       models/report2.sql: |
@@ -49,7 +49,7 @@ projects:
             materialized="table"
           )
         }}
-        SELECT {{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="to_date('2017-01-01')") }} AS _sum_of_dates
+        SELECT {{ dbt.dateadd(datepart='day', interval=1, from_date_or_timestamp="to_date('2017-01-01')") }} AS _sum_of_dates
         WHERE _sum_of_dates = '2017-01-02'
 
       models/report3.sql: |
@@ -58,7 +58,7 @@ projects:
             materialized="table"
           )
         }}
-        SELECT {{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="to_timestamp('2017-01-01 15:30:39.500')") }} AS _sum_of_dates
+        SELECT {{ dbt.dateadd(datepart='day', interval=1, from_date_or_timestamp="to_timestamp('2017-01-01 15:30:39.500')") }} AS _sum_of_dates
         WHERE _sum_of_dates = '2017-01-02 15:30:39.500'
 
 
