@@ -61,6 +61,8 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
 | Schema tests          | sequential_values             | :white_check_mark:    | no customization needed                                                |
 | Schema tests          | unique_combination_of_columns | :white_check_mark:    | no customization needed                                                |
 | Schema tests          | accepted_range                | :white_check_mark:    | no customization needed                                                |
+| Schema tests          | at_least_one                | :white_check_mark:    |  custom macro provided                                               |
+| Schema tests          | expression_is_true             | :white_check_mark:    |  custom macro provided                                               |
 | Introspective macros  | get_column_values             | :white_check_mark:    | custom macro provided                                                  |
 | Introspective macros  | get_relations_by_pattern      | :white_check_mark:    | custom macro provided                                                  |
 | Introspective macros  | get_relations_by_prefix       | :white_check_mark:    | custom macro provided                                                  |
@@ -71,10 +73,11 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
 | SQL generators        | star                          | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | union_relations               | :white_check_mark:    | custom macro provided                                                  |
 | SQL generators        | generate_series               | :white_check_mark:    | custom macro provided                                                  |
-| SQL generators        | surrogate_key                 | :white_check_mark:    | custom macro provided, [additional install steps required](#additional-steps-for-surrogate_key-macro)               |
+| SQL generators        | generate_surrogate_key             | :white_check_mark:    | custom macro provided, [additional install steps required](#additional-steps-for-surrogate_key-macro)               |
 | SQL generators        | safe_add                      | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | pivot                         | :white_check_mark:    | no customization needed                                                |
 | SQL generators        | unpivot                       | :white_check_mark:    | no customization needed, see [compatibility note](#unpivot)            |
+| SQL generators        | deduplicate                        | :white_check_mark:    | custom macro provided                                                |
 | Web macros            | get_url_parameter             | :white_check_mark:    | no customization needed                                                |
 | Web macros            | get_url_host                  | :white_check_mark:    | no customization needed                                                |
 | Web macros            | get_url_path                  | :white_check_mark:    | custom macro provided                                                  |
