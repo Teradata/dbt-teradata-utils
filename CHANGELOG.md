@@ -1,3 +1,17 @@
+## teradata_utils 1.0.0
+
+### Features
+* Newly added macros (at_least_one, deduplicate, expression_is_true, generate_surrogate_key)
+* Updated python and dbt-core dependency
+
+### Fixes
+* * Removed cross-db macros as they have been moved to dbt-teradata
+### Docs
+
+### Under the hood
+* Added a test patch files to test dbt-utils macros against db-teradata
+
+---
 ## teradata_utils 0.1.0
 
 ### Features
