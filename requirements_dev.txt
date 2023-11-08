@@ -5,5 +5,5 @@ pytest~=6.0
 tox~=3.2
 git+https://github.com/Teradata/dbt-adapter-tests
 pylava~=0.3.0
-dbt-teradata~=1.6.0
+dbt-teradata~=1.6.7
 -e .
