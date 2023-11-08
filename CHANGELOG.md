@@ -1,4 +1,4 @@
-## teradata_utils 1.0.0
+## teradata_utils 1.1.1
 
 ### Features
 * Newly added macros (at_least_one, deduplicate, expression_is_true, generate_surrogate_key)
