@@ -1,6 +1,6 @@
 This file contains instructions on how to run the integration tests found in dbt-utils repository (https://github.com/dbt-labs/dbt-utils)
 against the code in dbt-teradata-utils
-The patches in the folder are necessary for running the tests against dbt-utils 1.1.1
+The patches in the folder are necessary for running the tests against dbt-utils 1.2.0
 
 Prerequisites for running the tests:
 
@@ -9,19 +9,16 @@ Prerequisites for running the tests:
 -------------------------------------------------
 $ dbt -v
 Core:
-  - installed: 1.6.2
-  - latest:    1.6.6 - Update available!
+  - installed: 1.7.16
+  - latest:    1.8.2  - Update available!
 
   Your version of dbt-core is out of date!
   You can find instructions for upgrading here:
   https://docs.getdbt.com/docs/installation
 
 Plugins:
-  - teradata: 1.0.0 - Not compatible!
+  - teradata: 1.7.3 - Up to date!
 
-  At least one plugin is out of date or incompatible with dbt-core.
-  You can find instructions for upgrading here:
-  https://docs.getdbt.com/docs/installation
 -----------------------------------------------------------------
 3. proper entries in ~/.dbt/profiles.yml for the Teradata instance (see listing)
 ----------------------------------------------------------------
@@ -48,13 +45,13 @@ integration_tests:
 
 Running the tests:
 $DBT_TB_UTILS refers to the dbt-teradata-utils repository on the local machine - the repository under test
-$DBT_UTILS refers to the https://github.com/dbt-labs/dbt-utils repository from the local machine
+$DBT_UTILS refers to the https://github.com/dbt-labs/dbt-utils repository on the local machine
 
 1. Download the dbt-utils repo:
    git clone https://github.com/dbt-labs/dbt-utils.git $DBT_UTILS
 2. Checkout the relevant code version in a new branch:
    cd $DBT_UTILS
-   git checkout tags/1.1.1 -b main_1_1_1
+   git checkout tags/1.2.0 -b main_1_2_0
 3. Apply the patches in the new branch in the integration-tests folder
    cd $DBT_UTILS/integration_tests
    git apply $DBT_TB_UTILS/dbt_utils_integration_tests_howto/*patch

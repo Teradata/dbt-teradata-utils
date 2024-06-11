@@ -3,7 +3,7 @@ index fa0e744..5263705 100644
 --- a/integration_tests/models/generic_tests/schema.yml
 +++ b/integration_tests/models/generic_tests/schema.yml
 @@ -72,13 +72,13 @@ seeds:
-     tests:
+     data_tests:
        - dbt_utils.mutually_exclusive_ranges:
            lower_bound_column: valid_from
 -          upper_bound_column: coalesce(valid_to, '2099-01-01')
@@ -19,7 +19,7 @@ index fa0e744..5263705 100644
            gaps: required
  
 @@ -94,7 +94,7 @@ seeds:
-     tests:
+     data_tests:
        - dbt_utils.unique_combination_of_columns:
            combination_of_columns:
 -            - month
@@ -27,7 +27,7 @@ index fa0e744..5263705 100644
              - product
  
    - name: data_cardinality_equality_a
-@@ -165,7 +165,7 @@ models:
+@@ -216,7 +216,7 @@ models:
        - dbt_utils.recency:
            datepart: day
            field: created_at

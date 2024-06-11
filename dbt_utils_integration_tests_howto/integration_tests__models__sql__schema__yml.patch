@@ -4,15 +4,15 @@ index e79e782..8f0f1bf 100644
 +++ b/integration_tests/models/sql/schema.yml
 @@ -213,7 +213,7 @@ models:
        - name: favorite_number
-         tests:
+         data_tests:
            - dbt_utils.not_constant
 -  
 +
    - name: test_union_no_source_column
-     tests:
+     data_tests:
        - expect_table_columns_to_match_set:
 @@ -258,6 +258,9 @@ models:
-         tests:
+         data_tests:
            - dbt_utils.not_empty_string:
                trim_whitespace: false
 +              config:
@@ -20,4 +20,4 @@ index e79e782..8f0f1bf 100644
 +                warn_if: "<0"
  
    - name: test_width_bucket
-     tests:
+     data_tests:
