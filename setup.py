@@ -2,7 +2,7 @@
 import os
 import sys
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 if sys.version_info < (3, 8) or sys.version_info >= (3, 12):
@@ -32,13 +32,14 @@ setup(
     author="Teradata Corporation",
     author_email="developers@teradata.com",
     url="https://github.com/Teradata/dbt-teradata-utils",
+    packages=find_packages(exclude=['dbt_utils_integration_tests_howto']),
     package_data={
         'dbt.include.teradata': [
             'macros/*.sql'
         ],
     },
     install_requires=[
-        "dbt-core==1.6.7",
+        "dbt-core>=1.7.0,<1.8.0",
         "teradatasql>=16.20.0.0",
     ],
     classifiers=[

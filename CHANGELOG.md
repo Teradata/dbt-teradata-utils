@@ -1,3 +1,6 @@
+## teradata_utils 1.2.0
+* Fix get_tables_by_pattern_sql macro
+
 ## teradata_utils 1.1.1
 
 ### Features

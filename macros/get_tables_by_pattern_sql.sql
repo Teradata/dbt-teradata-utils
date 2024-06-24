@@ -8,6 +8,7 @@
             CASE
               WHEN TableKind = 'T' THEN 'table'
               WHEN TableKind = 'V' THEN 'view'
+              WHEN TableKind = 'O' THEN 'table'
               ELSE TableKind
             END AS table_type
         FROM dbc.tablesV
