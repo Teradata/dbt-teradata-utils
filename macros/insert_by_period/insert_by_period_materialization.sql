@@ -69,7 +69,6 @@
   {% set target_columns = adapter.get_columns_in_relation(target_relation) %}
   {%- set target_cols_csv = target_columns | map(attribute='quoted') | join(', ') -%}
   {%- set loop_vars = {'sum_rows_inserted': 0} -%}
-  {% set to_drop = [] %}
 
   -- commit each period as a separate transaction
   {% for i in range(num_periods) -%}
@@ -77,6 +76,12 @@
     {{ print(msg) }}
 
     {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period' ~ i ~ '_tmp' -%}
+    {%- set tmp_old_relation = adapter.get_relation(database=database, schema=schema, identifier=tmp_identifier) -%}
+    -- drop tmp_relation
+    {%- if tmp_old_relation is not none -%}
+      {{ adapter.drop_relation(tmp_old_relation) }}
+    {%- endif -%}
+
     {%- set tmp_relation = teradata_utils.create_relation_for_insert_by_period(tmp_identifier, schema, 'table') -%}
     {% call statement() -%}
       {% set tmp_table_sql = teradata_utils.get_period_sql(target_cols_csv,
@@ -87,7 +92,6 @@
                                                        stop_timestamp,
                                                        i) %}
       {{dbt.create_table_as(True, tmp_relation, tmp_table_sql)}}
-      {% do to_drop.append(tmp_relation) %}
     {%- endcall %}
 
     {{adapter.expand_target_column_types(from_relation=tmp_relation,
@@ -95,12 +99,12 @@
     {%- set name = 'main-' ~ i -%}
     {% call statement(name, fetch_result=True) -%}
       insert into {{target_relation}} ({{target_cols_csv}})
-      select {{target_cols_csv}}
-      from {{tmp_relation.include(schema=True)}}
+          select {{target_cols_csv}}
+          from {{tmp_relation.include(schema=True)}}
       ;
     {%- endcall %}
     {% set result = load_result('main-' ~ i) %}
-    
+
     {% set rows_inserted = teradata_utils.get_rows_inserted(result) %}
 
     {%- set sum_rows_inserted = loop_vars['sum_rows_inserted'] + rows_inserted -%}
@@ -109,6 +113,8 @@
     {%- set msg = "Ran for " ~ period ~ " " ~ (i + 1) ~ " of " ~ (num_periods) ~ "; " ~ rows_inserted ~ " record(s) inserted" -%}
     {{ print(msg) }}
 
+    -- drop tmp_relation after insertion
+    {{ adapter.drop_relation(tmp_relation) }}
   {%- endfor %}
 
   -- from the table mat
@@ -123,10 +129,6 @@
 
   -- `COMMIT` happens here
   {{ adapter.commit() }}
-
-  {% for rel in to_drop %}
-     {% do adapter.drop_relation(rel) %}
-  {% endfor %}
 
   {{ run_hooks(post_hooks, inside_transaction=False) }}
   -- end from the table mat
