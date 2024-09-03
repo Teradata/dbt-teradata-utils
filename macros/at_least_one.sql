@@ -22,10 +22,14 @@ select *
 from (
     with pruned_rows as (
       select
+      {% if group_by_columns|length() == 0 %}
         top 1
+      {% endif %}
         {{ select_pruned_cols }}
       from {{ model }}
-      where {{ column_name }} is not null
+      {% if group_by_columns|length() == 0 %}
+        where {{ column_name }} is not null
+      {% endif %}
     )
     select
         {# In TSQL, subquery aggregate columns need aliases #}
