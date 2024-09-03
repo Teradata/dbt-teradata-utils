@@ -1,8 +1,17 @@
 diff --git a/integration_tests/models/generic_tests/schema.yml b/integration_tests/models/generic_tests/schema.yml
-index fa0e744..5263705 100644
+index b12e3c7..bd2899e 100644
 --- a/integration_tests/models/generic_tests/schema.yml
 +++ b/integration_tests/models/generic_tests/schema.yml
-@@ -72,13 +72,13 @@ seeds:
+@@ -14,7 +14,7 @@ seeds:
+       - name: field
+         data_tests:
+           - dbt_utils.at_least_one
+-      - name: value
++      - name: _value_
+         data_tests:
+           - dbt_utils.at_least_one:
+               group_by_columns: ['field']
+@@ -76,13 +76,13 @@ seeds:
      data_tests:
        - dbt_utils.mutually_exclusive_ranges:
            lower_bound_column: valid_from
@@ -18,7 +27,7 @@ index fa0e744..5263705 100644
            partition_by: subscription_id
            gaps: required
  
-@@ -94,7 +94,7 @@ seeds:
+@@ -98,7 +98,7 @@ seeds:
      data_tests:
        - dbt_utils.unique_combination_of_columns:
            combination_of_columns:
@@ -27,7 +36,7 @@ index fa0e744..5263705 100644
              - product
  
    - name: data_cardinality_equality_a
-@@ -216,7 +216,7 @@ models:
+@@ -220,12 +220,12 @@ models:
        - dbt_utils.recency:
            datepart: day
            field: created_at
@@ -36,3 +45,9 @@ index fa0e744..5263705 100644
            ignore_time_component: true
        - dbt_utils.recency:
            datepart: day
+           field: created_at
+-          interval: 1
++          interval: 0
+           ignore_time_component: false
+           error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+           warn_if: "<0"

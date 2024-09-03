@@ -1,8 +1,8 @@
 diff --git a/integration_tests/dbt_project.yml b/integration_tests/dbt_project.yml
-index a9531e7..49cc905 100644
+index 8df3cdb..ce78069 100644
 --- a/integration_tests/dbt_project.yml
 +++ b/integration_tests/dbt_project.yml
-@@ -22,7 +22,7 @@ clean-targets:         # directories to be removed by `dbt clean`
+@@ -26,7 +26,7 @@ flags:
  
  dispatch:
    - macro_namespace: 'dbt_utils'
@@ -11,9 +11,9 @@ index a9531e7..49cc905 100644
  
  seeds:
  
-@@ -49,6 +49,24 @@ seeds:
-           min_value: float
-           max_value: float
+@@ -59,6 +59,25 @@ seeds:
+       data_unpivot_quote_expected:
+         +quote_columns: true
  
 +      data_generate_surrogate_key:
 +        +column_types:
@@ -22,6 +22,7 @@ index a9531e7..49cc905 100644
 +          column_3: varchar(100)
 +          expected_column_1_only: varchar(100)
 +          expected_all_columns: varchar(100)
++
 +    web:
 +      data_url_host:
 +        +column_types:
