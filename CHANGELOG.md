@@ -1,3 +1,9 @@
+## teradata_utils 1.3.0
+
+### Fixes
+* Fix at_least_one macro
+
+---
 ## teradata_utils 1.2.0
 
 ### Fixes

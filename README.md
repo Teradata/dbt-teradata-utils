@@ -8,7 +8,7 @@ This [dbt](https://github.com/dbt-labs/dbt) package provides compatibility with 
     ```
     packages:
     - package: Teradata/teradata_utils
-      version: 1.2.0
+      version: 1.3.0
     ```
     For more information about installing packages, see [dbt documentation](https://docs.getdbt.com/docs/package-management).
 1. Set the `dispatch` config in your root project (on dbt v0.20.0 and newer) and let `teradata_utils` package intercept macros from the `dbt_utils` namespace:

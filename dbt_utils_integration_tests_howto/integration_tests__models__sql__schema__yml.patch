@@ -1,8 +1,8 @@
 diff --git a/integration_tests/models/sql/schema.yml b/integration_tests/models/sql/schema.yml
-index e79e782..8f0f1bf 100644
+index 850e454..a294578 100644
 --- a/integration_tests/models/sql/schema.yml
 +++ b/integration_tests/models/sql/schema.yml
-@@ -213,7 +213,7 @@ models:
+@@ -218,7 +218,7 @@ models:
        - name: favorite_number
          data_tests:
            - dbt_utils.not_constant
@@ -11,7 +11,7 @@ index e79e782..8f0f1bf 100644
    - name: test_union_no_source_column
      data_tests:
        - expect_table_columns_to_match_set:
-@@ -258,6 +258,9 @@ models:
+@@ -263,6 +263,9 @@ models:
          data_tests:
            - dbt_utils.not_empty_string:
                trim_whitespace: false

@@ -1,0 +1,9 @@
+diff --git a/integration_tests/data/schema_tests/data_test_at_least_one.csv b/integration_tests/data/schema_tests/data_test_at_least_one.csv
+index 1a78cde..1a59085 100644
+--- a/integration_tests/data/schema_tests/data_test_at_least_one.csv
++++ b/integration_tests/data/schema_tests/data_test_at_least_one.csv
+@@ -1,3 +1,3 @@
+-field,value
++field,_value_
+ a,1
+ b,
