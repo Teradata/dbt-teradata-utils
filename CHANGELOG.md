@@ -1,5 +1,8 @@
 ## teradata_utils 1.3.0
 
+### Features
+* Added support for insert_by_period materialization
+
 ### Fixes
 * Fix at_least_one macro
 
