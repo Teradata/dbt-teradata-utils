@@ -6,6 +6,9 @@
 ### Fixes
 * Fix at_least_one macro
 
+### Under the hood
+* Removed custom test suite
+
 ---
 ## teradata_utils 1.2.0
 
