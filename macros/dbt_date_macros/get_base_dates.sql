@@ -1,12 +1,23 @@
 {% macro teradata__get_base_dates(start_date, end_date, n_dateparts, datepart) %}
 
     {%- if start_date and end_date -%}
-        {%- set start_date = (
-            "cast('" ~ start_date ~ "' as " ~ dbt.type_timestamp() ~ ")"
-        ) -%}
-        {%- set end_date = (
-            "cast('" ~ end_date ~ "' as " ~ dbt.type_timestamp() ~ ")"
-        ) -%}
+        {%- if datepart == 'day' -%}
+            {# For day-level granularity, cast string -> DATE -> TIMESTAMP to avoid "Invalid timestamp" errors #}
+            {%- set start_date = (
+                "cast(cast('" ~ start_date ~ "' as date) as " ~ dbt.type_timestamp() ~ ")"
+            ) -%}
+            {%- set end_date = (
+                "cast(cast('" ~ end_date ~ "' as date) as " ~ dbt.type_timestamp() ~ ")"
+            ) -%}
+        {%- else -%}
+            {# For hour/minute/second granularity, cast directly to TIMESTAMP #}
+            {%- set start_date = (
+                "cast('" ~ start_date ~ "' as " ~ dbt.type_timestamp() ~ ")"
+            ) -%}
+            {%- set end_date = (
+                "cast('" ~ end_date ~ "' as " ~ dbt.type_timestamp() ~ ")"
+            ) -%}
+        {%- endif -%}
 
     {%- elif n_dateparts and datepart -%}
 
